@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using MediaTekDocuments.model;
 using MediaTekDocuments.dal;
 using Newtonsoft.Json;
@@ -11,6 +12,7 @@ namespace MediaTekDocuments.controller
     /// </summary>
     class FrmMediatekController
     {
+        #region Commun
         /// <summary>
         /// Objet d'accès aux données
         /// </summary>
@@ -25,7 +27,7 @@ namespace MediaTekDocuments.controller
         }
 
         /// <summary>
-        /// getter sur la liste des genres
+        /// Getter sur la liste des genres
         /// </summary>
         /// <returns>Liste d'objets Genre</returns>
         public List<Categorie> GetAllGenres()
@@ -34,34 +36,7 @@ namespace MediaTekDocuments.controller
         }
 
         /// <summary>
-        /// getter sur la liste des livres
-        /// </summary>
-        /// <returns>Liste d'objets Livre</returns>
-        public List<Livre> GetAllLivres()
-        {
-            return access.GetAllLivres();
-        }
-
-        /// <summary>
-        /// getter sur la liste des Dvd
-        /// </summary>
-        /// <returns>Liste d'objets dvd</returns>
-        public List<Dvd> GetAllDvd()
-        {
-            return access.GetAllDvd();
-        }
-
-        /// <summary>
-        /// getter sur la liste des revues
-        /// </summary>
-        /// <returns>Liste d'objets Revue</returns>
-        public List<Revue> GetAllRevues()
-        {
-            return access.GetAllRevues();
-        }
-
-        /// <summary>
-        /// getter sur les rayons
+        /// Getter sur les rayons
         /// </summary>
         /// <returns>Liste d'objets Rayon</returns>
         public List<Categorie> GetAllRayons()
@@ -70,7 +45,7 @@ namespace MediaTekDocuments.controller
         }
 
         /// <summary>
-        /// getter sur les publics
+        /// Getter sur les publics
         /// </summary>
         /// <returns>Liste d'objets Public</returns>
         public List<Categorie> GetAllPublics()
@@ -78,11 +53,145 @@ namespace MediaTekDocuments.controller
             return access.GetAllPublics();
         }
 
+        /// <summary>
+        /// Getter sur les etats
+        /// </summary>
+        /// <returns></returns>
+        public List<Suivi> GetAllSuivis()
+        {
+            return access.GetAllSuivis();
+        }
+        #endregion
+
+
+        #region Onglet Livres
+        /// <summary>
+        /// Getter sur la liste des livres
+        /// </summary>
+        /// <returns>Liste d'objets Livre</returns>
+        public List<Livre> GetAllLivres()
+        {
+            return access.GetAllLivres();
+        }
 
         /// <summary>
-        /// récupère les exemplaires d'une revue
+        /// Ajouter un livre dans la BDD
         /// </summary>
-        /// <param name="idDocuement">id de la revue concernée</param>
+        /// <param name="livre"></param>
+        /// <returns>true si l'oppération est correcte</returns>
+        public bool CreerLivre(Livre livre)
+        {
+            return access.CreerEntite("livre", JsonConvert.SerializeObject(livre));
+        }
+
+        /// <summary>
+        /// Modifié un livre dans la BDD
+        /// </summary>
+        /// <param name="livre"></param>
+        /// <returns>true si l'oppération est correcte</returns>
+        public bool UpdateLivre(Livre livre)
+        {
+            return access.UpdateEntite("livre", livre.Id, JsonConvert.SerializeObject(livre));
+        }
+
+        /// <summary>
+        /// Supprimé un livre dans la BDD
+        /// </summary>
+        /// <param name="livre"></param>
+        /// <returns>true si l'oppération est correcte</returns>
+        public bool SupprimerLivre(Livre livre)
+        {
+            return access.SupprimerEntite("livre", JsonConvert.SerializeObject(livre));
+        }
+        #endregion
+
+        #region Onglet DvD
+        /// <summary>
+        /// Getter sur la liste des Dvd
+        /// </summary>
+        /// <returns>Liste d'objets dvd</returns>
+        public List<Dvd> GetAllDvd()
+        {
+            return access.GetAllDvd();
+        }
+
+        /// <summary>
+        /// Ajouter un dvd dans la BDD
+        /// </summary>
+        /// <param name="dvd"></param>
+        /// <returns>true si l'oppération est correcte</returns>
+        public bool CreerDvd(Dvd dvd)
+        {
+            return access.CreerEntite("dvd", JsonConvert.SerializeObject(dvd));
+        }
+
+        /// <summary>
+        /// Modifié un dvd dans la BDD
+        /// </summary>
+        /// <param name="dvd"></param>
+        /// <returns>true si l'oppération est correcte</returns>
+        public bool UpdateDvd(Dvd dvd)
+        {
+            return access.UpdateEntite("dvd", dvd.Id, JsonConvert.SerializeObject(dvd));
+        }
+
+        /// <summary>
+        /// Supprime un dvd dans la BDD
+        /// </summary>
+        /// <param name="dvd"></param>
+        /// <returns>true si l'oppération est correcte</returns>
+        public bool SupprimerDvd(Dvd dvd)
+        {
+            return access.SupprimerEntite("dvd", JsonConvert.SerializeObject(dvd)); ;
+        }
+        #endregion
+
+        #region Onglet Revues
+        /// <summary>
+        /// Getter sur la liste des revues
+        /// </summary>
+        /// <returns>Liste d'objets Revue</returns>
+        public List<Revue> GetAllRevues()
+        {
+            return access.GetAllRevues();
+        }
+
+        /// <summary>
+        /// Ajouter une revue dans la BDD
+        /// </summary>
+        /// <param name="revue"></param>
+        /// <returns>true si l'oppération est correcte</returns>
+        public bool CreerRevue(Revue revue)
+        {
+            return access.CreerEntite("revue", JsonConvert.SerializeObject(revue));
+        }
+
+        /// <summary>
+        /// Modifie une revue dans la BDD
+        /// </summary>
+        /// <param name="revue"></param>
+        /// <returns>true si l'oppération est correcte</returns>
+        public bool UpdateRevue(Revue revue)
+        {
+            return access.UpdateEntite("revue", revue.Id, JsonConvert.SerializeObject(revue));
+        }
+
+        /// <summary>
+        /// Supprime une revue dans la BDD
+        /// </summary>
+        /// <param name="revue"></param>
+        /// <returns>true si l'oppération est correcte</returns>
+        public bool SupprimerRevue(Revue revue)
+        {
+            return access.SupprimerEntite("revue", JsonConvert.SerializeObject(revue));
+        }
+        #endregion
+
+        #region Onglet Parutions
+        /// <summary>
+        /// Récupère les exemplaires d'une revue
+        /// </summary>
+        /// <param name="idDocuement"></param>
         /// <returns>Liste d'objets Exemplaire</returns>
         public List<Exemplaire> GetExemplairesRevue(string idDocuement)
         {
@@ -90,294 +199,128 @@ namespace MediaTekDocuments.controller
         }
 
         /// <summary>
-        /// Crée un exemplaire d'une revue dans la bdd
+        /// Ajouter un exemplaire d'une revue dans la BDD
         /// </summary>
-        /// <param name="exemplaire">L'objet Exemplaire concerné</param>
-        /// <returns>True si la création a pu se faire</returns>
+        /// <param name="exemplaire"></param>
+        /// <returns>True si l'opération est correcte</returns>
         public bool CreerExemplaire(Exemplaire exemplaire)
         {
             return access.CreerExemplaire(exemplaire);
         }
+        #endregion
 
+        #region Commandes de livres et Dvd
         /// <summary>
-        /// Ajouter un livre dans la BDD
+        /// Récupère les commandes d'une livre
         /// </summary>
-        /// <param name="livre"></param>
-        /// <returns>true si oppration correcte</returns>
-        public bool CreerLivre(Livre livre)
+        /// <param name="idLivre">id du livre</param>
+        /// <returns></returns>
+        public List<CommandeDocument> GetCommandesLivres(string idLivre)
         {
-            bool validateur = true;
-            Dictionary<string, string> dicDocument = new Dictionary<string, string>();
-            dicDocument.Add("id", livre.Id);
-            dicDocument.Add("titre", livre.Titre);
-            dicDocument.Add("idGenre", livre.IdGenre);
-            dicDocument.Add("idPublic", livre.IdPublic);
-            dicDocument.Add("idRayon", livre.IdRayon);
-            dicDocument.Add("image", livre.Image);
-            if (!access.CreerDocument(JsonConvert.SerializeObject(dicDocument)))
-                validateur = false;
-
-            Dictionary<string, string> dicLivreDvd = new Dictionary<string, string>();
-            dicLivreDvd.Add("id", livre.Id);
-            if (!access.CreerLivreDvd(JsonConvert.SerializeObject(dicLivreDvd)))
-                validateur = false;
-
-            Dictionary<string, string> unLivre = new Dictionary<string, string>();
-            unLivre.Add("id", livre.Id);
-            unLivre.Add("ISBN", livre.Isbn);
-            unLivre.Add("auteur", livre.Auteur);
-            unLivre.Add("collection", livre.Collection);
-            if (!access.CreerLivre(JsonConvert.SerializeObject(unLivre)))
-                validateur = false;
-           
-            return validateur;
+            return access.GetCommandesLivres(idLivre);
         }
 
         /// <summary>
-        /// modifie un livre dans la bddd
+        /// Retourne l'id max des commandes
         /// </summary>
-        /// <param name="livre"></param>
-        /// <returns>true si oppration correcte</returns>
-        public bool UpdateLivre(Livre livre)
+        /// <returns></returns>
+        public string getNbCommandeMax()
         {
-            bool validateur = true;
-            Dictionary<string, string> dicDocument = new Dictionary<string, string>();
-            dicDocument.Add("id", livre.Id);
-            dicDocument.Add("titre", livre.Titre);
-            dicDocument.Add("idGenre", livre.IdGenre);
-            dicDocument.Add("idPublic", livre.IdPublic);
-            dicDocument.Add("idRayon", livre.IdRayon);
-            dicDocument.Add("image", livre.Image);
-            if (!access.UpdateDocument(livre.Id, JsonConvert.SerializeObject(dicDocument)))
-                validateur = false;
-
-            Dictionary<string, string> unLivre = new Dictionary<string, string>();
-            unLivre.Add("id", livre.Id);
-            unLivre.Add("ISBN", livre.Isbn);
-            unLivre.Add("auteur", livre.Auteur);
-            unLivre.Add("collection", livre.Collection);
-            if (!access.UpdateLivre(livre.Id, JsonConvert.SerializeObject(unLivre)))
-                validateur = false;
-
-            return validateur;
+            return access.getMaxIndex("maxcommande");
         }
 
         /// <summary>
-        /// supprime un livre dans la bdd
+        /// Retourne l'id max des livres
         /// </summary>
-        /// <param name="livre"></param>
-        /// <returns>true si oppration correcte</returns>
-        public bool SupprimerLivre(Livre livre)
+        /// <returns></returns>
+        public string getNbLivreMax()
         {
-            bool validateur = true;
-
-            Dictionary<string, string> unLivre = new Dictionary<string, string>();
-            unLivre.Add("id", livre.Id);
-            unLivre.Add("ISBN", livre.Isbn);
-            unLivre.Add("auteur", livre.Auteur);
-            unLivre.Add("collection", livre.Collection);
-            if (!access.SupprimerLivre(JsonConvert.SerializeObject(unLivre)))
-                validateur = false;
-
-            Dictionary<string, string> dicLivreDvd = new Dictionary<string, string>();
-            dicLivreDvd.Add("id", livre.Id);
-            if (!access.SupprimerLivreDvD(JsonConvert.SerializeObject(dicLivreDvd)))
-                validateur = false;
-
-            Dictionary<string, string> dicDocument = new Dictionary<string, string>();
-            dicDocument.Add("id", livre.Id);
-            dicDocument.Add("titre", livre.Titre);
-            dicDocument.Add("idGenre", livre.IdGenre);
-            dicDocument.Add("idPublic", livre.IdPublic);
-            dicDocument.Add("idRayon", livre.IdRayon);
-            dicDocument.Add("image", livre.Image);
-            if (!access.SupprimerDocument(JsonConvert.SerializeObject(dicDocument)))
-                validateur = false;
-
-            return validateur;
+            return access.getMaxIndex("maxlivre");
         }
 
         /// <summary>
-        /// Ajouter un dvd dans la bdd
+        /// Retourne l'id max des Dvd
         /// </summary>
-        /// <param name="dvd"></param>
-        /// <returns>true si oppration correcte</returns>
-        public bool CreerDvd(Dvd dvd)
+        /// <returns></returns>
+        public string getNbDvdMax()
         {
-            bool validateur = true;
-            Dictionary<string, string> dicDocument = new Dictionary<string, string>();
-            dicDocument.Add("id", dvd.Id);
-            dicDocument.Add("titre", dvd.Titre);
-            dicDocument.Add("idGenre", dvd.IdGenre);
-            dicDocument.Add("idPublic", dvd.IdPublic);
-            dicDocument.Add("idRayon", dvd.IdRayon);
-            dicDocument.Add("image", dvd.Image);
-            if (!access.CreerDocument(JsonConvert.SerializeObject(dicDocument)))
-                validateur = false;
-
-            Dictionary<string, string> dicLivreDvd = new Dictionary<string, string>();
-            dicLivreDvd.Add("id", dvd.Id);
-            if (!access.CreerLivreDvd(JsonConvert.SerializeObject(dicLivreDvd)))
-                validateur = false;
-
-            Dictionary<string, object> unDvd = new Dictionary<string, object>();
-            unDvd.Add("duree", dvd.Duree);
-            unDvd.Add("realisateur", dvd.Realisateur);
-            unDvd.Add("synopsis", dvd.Synopsis);
-            if (!access.CreerDvd(JsonConvert.SerializeObject(unDvd)))
-                validateur = false;
-
-            return validateur;
+            return access.getMaxIndex("maxdvd");
         }
 
         /// <summary>
-        /// modifie un dvd dans la bdd
+        /// Retourne l'id max des revues
         /// </summary>
-        /// <param name="dvd"></param>
-        /// <returns>true si oppration correcte</returns>
-        public bool UpdateDvd(Dvd dvd)
+        /// <returns></returns>
+        public string getNbRevueMax()
         {
-            bool validateur = true;
-            Dictionary<string, string> dicDocument = new Dictionary<string, string>();
-            dicDocument.Add("id", dvd.Id);
-            dicDocument.Add("titre", dvd.Titre);
-            dicDocument.Add("idGenre", dvd.IdGenre);
-            dicDocument.Add("idPublic", dvd.IdPublic);
-            dicDocument.Add("idRayon", dvd.IdRayon);
-            dicDocument.Add("image", dvd.Image);
-            if (!access.UpdateDocument(dvd.Id, JsonConvert.SerializeObject(dicDocument)))
-                validateur = false;
-
-            Dictionary<string, object> unDvd = new Dictionary<string, object>();
-            unDvd.Add("id", dvd.Id);
-            unDvd.Add("duree", dvd.Duree);
-            unDvd.Add("realisateur", dvd.Realisateur);
-            unDvd.Add("synopsis", dvd.Synopsis);
-            if (!access.UpdateDvd(dvd.Id, JsonConvert.SerializeObject(unDvd)))
-                validateur = false;
-
-            return validateur;
+            return access.getMaxIndex("maxrevue");
         }
 
         /// <summary>
-        /// supprime un dvd dans la bdd
+        /// Requêtes post update delete concernant une commande de livre ou dvd
         /// </summary>
-        /// <param name="dvd"></param>
-        /// <returns>true si oppration correcte</returns>
-        public bool SupprimerDvd(Dvd dvd)
+        /// <param name="id"></param>
+        /// <param name="nbExemplaire"></param>
+        /// <param name="idLivreDvd"></param>
+        /// <param name="idsuivi"></param>
+        /// <param name="verbose"></param>
+        /// <returns></returns>
+        public bool utilCommandeDocument(string id, DateTime dateCommande, double montant, int nbExemplaire,
+            string idLivreDvd, int idsuivi, string etat, string verbose)
         {
-            bool validateur = true;
+            Dictionary<string, object> uneCommandeDocument = new Dictionary<string, object>();
+            uneCommandeDocument.Add("Id", id);
+            uneCommandeDocument.Add("DateCommande", dateCommande.ToString("yyyy-MM-dd"));
+            uneCommandeDocument.Add("Montant", montant);
+            uneCommandeDocument.Add("NbExemplaire", nbExemplaire);
+            uneCommandeDocument.Add("IdLivreDvd", idLivreDvd);
+            uneCommandeDocument.Add("IdSuivi", idsuivi);
+            uneCommandeDocument.Add("Etat", etat);
 
-            Dictionary<string, object> unDvd = new Dictionary<string, object>();
-            unDvd.Add("id", dvd.Id);
-            unDvd.Add("duree", dvd.Duree);
-            unDvd.Add("realisateur", dvd.Realisateur);
-            unDvd.Add("synopsis", dvd.Synopsis);
-            if (!access.SupprimerDvd(JsonConvert.SerializeObject(unDvd)))
-                validateur = false;
+            if (verbose == "post")
+                return access.CreerEntite("commandedocument", JsonConvert.SerializeObject(uneCommandeDocument));
+            if (verbose == "update")
+                return access.UpdateEntite("commandedocument", id, JsonConvert.SerializeObject(uneCommandeDocument));
+            if (verbose == "delete")
+                return access.SupprimerEntite("commandedocument", JsonConvert.SerializeObject(uneCommandeDocument));
+            return false;
+        }
 
-            Dictionary<string, string> dicLivreDvd = new Dictionary<string, string>();
-            dicLivreDvd.Add("id", dvd.Id);
-            if (!access.SupprimerLivreDvD(JsonConvert.SerializeObject(dicLivreDvd)))
-                validateur = false;
-
-            Dictionary<string, string> dicDocument = new Dictionary<string, string>();
-            dicDocument.Add("id", dvd.Id);
-            dicDocument.Add("titre", dvd.Titre);
-            dicDocument.Add("idGenre", dvd.IdGenre);
-            dicDocument.Add("idPublic", dvd.IdPublic);
-            dicDocument.Add("idRayon", dvd.IdRayon);
-            dicDocument.Add("image", dvd.Image);
-            if (!access.SupprimerDocument(JsonConvert.SerializeObject(dicDocument)))
-                validateur = false;
-
-            return validateur;
+        /// <summary>
+        /// Ajouter une commande livre, Dvd dans la BDD
+        /// </summary>
+        /// <param name="commandeLivreDvd"></param>
+        /// <returns></returns>
+        public bool CreerLivreDvdCom(CommandeDocument commandeLivreDvd)
+        {
+            return utilCommandeDocument(commandeLivreDvd.Id, commandeLivreDvd.DateCommande, commandeLivreDvd.Montant, commandeLivreDvd.NbExemplaire,
+                    commandeLivreDvd.IdLivreDvd, commandeLivreDvd.IdSuivi, commandeLivreDvd.Etat, "post");
         }
 
 
         /// <summary>
-        /// Ajouter une revue dans la bdd
+        /// Modifie une commande livre, Dvd dans la BDD
         /// </summary>
-        /// <param name="revue"></param>
-        /// <returns>true si oppration correcte</returns>
-        public bool CreerRevue(Revue revue)
+        /// <param name="commandeLivreDvd"></param>
+        /// <returns></returns>
+        public bool UpdateLivreDvdCom(CommandeDocument commandeLivreDvd)
         {
-            bool validateur = true;
-            Dictionary<string, string> dicDocument = new Dictionary<string, string>();
-            dicDocument.Add("id", revue.Id);
-            dicDocument.Add("titre", revue.Titre);
-            dicDocument.Add("idGenre", revue.IdGenre);
-            dicDocument.Add("idPublic", revue.IdPublic);
-            dicDocument.Add("idRayon", revue.IdRayon);
-            dicDocument.Add("image", revue.Image);
-            if (!access.CreerDocument(JsonConvert.SerializeObject(dicDocument)))
-                validateur = false;
-
-            Dictionary<string, object> uneRevue = new Dictionary<string, object>();
-            uneRevue.Add("id", revue.Id);
-            uneRevue.Add("periodicite", revue.Periodicite);
-            uneRevue.Add("delaiMiseADispo", revue.DelaiMiseADispo);
-            if (!access.CreerRevue(JsonConvert.SerializeObject(uneRevue)))
-                validateur = false;
-
-            return validateur;
+            return utilCommandeDocument(commandeLivreDvd.Id, commandeLivreDvd.DateCommande, commandeLivreDvd.Montant, commandeLivreDvd.NbExemplaire,
+                   commandeLivreDvd.IdLivreDvd, commandeLivreDvd.IdSuivi, commandeLivreDvd.Etat, "update");
         }
 
         /// <summary>
-        /// modifie une revue dans la bdd
+        /// Supprime une commande livre,Dvd dans la BDD
         /// </summary>
-        /// <param name="revue"></param>
-        /// <returns>true si oppration correcte</returns>
-        public bool UpdateRevue(Revue revue)
+        /// <param name="commandeLivreDvd"></param>
+        /// <returns></returns>
+        public bool SupprimerLivreDvdCom(CommandeDocument commandeLivreDvd)
         {
-            bool validateur = true;
-            Dictionary<string, string> dicDocument = new Dictionary<string, string>();
-            dicDocument.Add("id", revue.Id);
-            dicDocument.Add("titre", revue.Titre);
-            dicDocument.Add("idGenre", revue.IdGenre);
-            dicDocument.Add("idPublic", revue.IdPublic);
-            dicDocument.Add("idRayon", revue.IdRayon);
-            dicDocument.Add("image", revue.Image);
-            if (!access.UpdateDocument(revue.Id, JsonConvert.SerializeObject(dicDocument)))
-                validateur = false;
-
-            Dictionary<string, object> uneRevue = new Dictionary<string, object>();
-            uneRevue.Add("id", revue.Id);
-            uneRevue.Add("periodicite", revue.Periodicite);
-            uneRevue.Add("delaiMiseADispo", revue.DelaiMiseADispo);
-            if (!access.UpdateRevue(revue.Id, JsonConvert.SerializeObject(uneRevue)))
-                validateur = false;
-
-            return validateur;
+            return utilCommandeDocument(commandeLivreDvd.Id, commandeLivreDvd.DateCommande, commandeLivreDvd.Montant, commandeLivreDvd.NbExemplaire,
+                   commandeLivreDvd.IdLivreDvd, commandeLivreDvd.IdSuivi, commandeLivreDvd.Etat, "delete");
         }
+        #endregion
 
-        /// <summary>
-        /// supprime une revue dans la bdd
-        /// </summary>
-        /// <param name="revue"></param>
-        /// <returns>true si oppration correcte</returns>
-        public bool SupprimerRevue(Revue revue)
-        {
-            bool validateur = true;
 
-            Dictionary<string, object> uneRevue = new Dictionary<string, object>();
-            uneRevue.Add("id", revue.Id);
-            uneRevue.Add("periodicite", revue.Periodicite);
-            uneRevue.Add("delaiMiseADispo", revue.DelaiMiseADispo);
-            if (!access.SupprimerRevue(JsonConvert.SerializeObject(uneRevue)))
-                validateur = false;
-
-            Dictionary<string, string> dicDocument = new Dictionary<string, string>();
-            dicDocument.Add("id", revue.Id);
-            dicDocument.Add("titre", revue.Titre);
-            dicDocument.Add("idGenre", revue.IdGenre);
-            dicDocument.Add("idPublic", revue.IdPublic);
-            dicDocument.Add("idRayon", revue.IdRayon);
-            dicDocument.Add("image", revue.Image);
-            if (!access.SupprimerDocument(JsonConvert.SerializeObject(dicDocument)))
-                validateur = false;
-
-            return validateur;
-        }
     }
 }

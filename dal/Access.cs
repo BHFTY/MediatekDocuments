@@ -96,6 +96,12 @@ namespace MediaTekDocuments.dal
             return new List<Categorie>(lesRayons);
         }
 
+        public List<Suivi> GetAllSuivis()
+        {
+            IEnumerable<Suivi> LesSuivis = TraitementRecup<Suivi>(GET, "suivi");
+            return new List<Suivi>(LesSuivis);
+        }
+
         /// <summary>
         /// Retourne toutes les catégories de public à partir de la BDD
         /// </summary>
@@ -117,16 +123,15 @@ namespace MediaTekDocuments.dal
         }
 
         /// <summary>
-        /// Ajouter un document dans la BDD, return true si l'opération est correcte
+        /// Ajouter une entité dans la BDD, return true si l'opération est correcte
         /// </summary>
-        /// <param name="jsonDocument"></param>
+        /// <param name="jsonEntite"></param>
         /// <returns></returns>
-        public bool CreerDocument(String jsonDocument)
+        public bool CreerEntite(String type, String jsonEntite)
         {
-            jsonDocument = jsonDocument.Replace(' ', '-');
             try
             {
-                List<Object> liste = TraitementRecup<Object>(POST, "document/" + jsonDocument);
+                List<Object> liste = TraitementRecup<Object>(POST, type + "/" + jsonEntite);
                 return (liste != null);
             }
             catch (Exception ex)
@@ -137,17 +142,16 @@ namespace MediaTekDocuments.dal
         }
 
         /// <summary>
-        /// Modifie un document dans la BDD, return true si l'opération est correcte
+        /// Modifie une entité dans la BDD, return true si l'opération est correcte
         /// </summary>
         /// <param name="id"></param>
-        /// <param name="jsonDocument"></param>
+        /// <param name="jsonEntite"></param>
         /// <returns></returns>
-        public bool UpdateDocument(string id, String jsonDocument)
+        public bool UpdateEntite(string type, string id, String jsonEntite)
         {
-            jsonDocument = jsonDocument.Replace(' ', '-');
             try
             {
-                List<Object> liste = TraitementRecup<Object>(PUT, "document/" + id + "/" + jsonDocument);
+                List<Object> liste = TraitementRecup<Object>(PUT,type+ "/" + id + "/" + jsonEntite);
                 return (liste != null);
             }
             catch (Exception ex)
@@ -158,238 +162,15 @@ namespace MediaTekDocuments.dal
         }
 
         /// <summary>
-        /// Supprime un document dans la BDD, return true si l'opération est correcte
+        /// Supprime une entité dans la BDD, return true si l'opération est correcte
         /// </summary>
-        /// <param name="jsonDocument"></param>
+        /// <param name="jsonEntite"></param>
         /// <returns></returns>
-        public bool SupprimerDocument(String jsonDocument)
-        {
-            jsonDocument = jsonDocument.Replace(' ', '-');
-            try
-            {
-                List<Object> liste = TraitementRecup<Object>(DELETE, "document/" + jsonDocument);
-                return (liste != null);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-            return false;
-        }
-
-        /// <summary>
-        /// Ajouter un livre_dvd dans la BDD, return true si l'opération est correct
-        /// </summary>
-        /// <param name="jsonLivreDvd"></param>
-        /// <returns></returns>
-        public bool CreerLivreDvd(String jsonLivreDvd)
+        public bool SupprimerEntite(string type,String jsonEntite)
         {
             try
             {
-                List<Object> liste = TraitementRecup<Object>(POST, "livres_dvd/" + jsonLivreDvd);
-                return (liste != null);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-            return false;
-        }
-
-        /// <summary>
-        /// Supprime un livre_dvd dans la BDD, return true si l'opération est correcte
-        /// </summary>
-        /// <param name="jsonLivreDvd"></param>
-        /// <returns></returns>
-        public bool SupprimerLivreDvD(String jsonLivreDvd)
-        {
-            jsonLivreDvd = jsonLivreDvd.Replace(' ', '-');
-            try
-            {
-                List<Object> liste = TraitementRecup<Object>(DELETE, "livres_dvd/" + jsonLivreDvd);
-                return (liste != null);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-            return false;
-        }
-
-        /// <summary>
-        /// Ajouter un livre dans la BDD, return true si l'opération est correcte
-        /// </summary>
-        /// <param name="jsonLivre"></param>
-        /// <returns></returns>
-        public bool CreerLivre(String jsonLivre)
-        {
-            jsonLivre = jsonLivre.Replace(' ', '-');
-            try
-            {
-                List<Object> liste = TraitementRecup<Object>(POST, "livre/" + jsonLivre);
-                return (liste != null);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-            return false;
-        }
-
-        /// <summary>
-        /// Modifie un livre dans la BDD, return true si l'opération est correcte
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="jsonLivre"></param>
-        /// <returns></returns>
-        public bool UpdateLivre(string id, String jsonLivre)
-        {
-            jsonLivre = jsonLivre.Replace(' ', '-');
-            try
-            {
-                List<Object> liste = TraitementRecup<Object>(PUT, "livre/" + id + "/" + jsonLivre);
-                return (liste != null);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-            return false;
-        }
-
-        /// <summary>
-        /// Supprime un livre dans la BDD, return true si l'opération est correcte
-        /// </summary>
-        /// <param name="jsonLivreDvd"></param>
-        /// <returns></returns>
-        public bool SupprimerLivre(String jsonLivreDvd)
-        {
-            jsonLivreDvd = jsonLivreDvd.Replace(' ', '-');
-            try
-            {
-                List<Object> liste = TraitementRecup<Object>(DELETE, "livre/" + jsonLivreDvd);
-                return (liste != null);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-            return false;
-        }
-
-        /// <summary>
-        /// Créer un DVD dans la BDD, return true si l'opération est correcte
-        /// </summary>
-        /// <param name="jsonDvd"></param>
-        /// <returns></returns>
-        public bool CreerDvd(String jsonDvd)
-        {
-            jsonDvd = jsonDvd.Replace(' ', '-');
-            try
-            {
-                List<Object> liste = TraitementRecup<Object>(POST, "dvd/" + jsonDvd);
-                return (liste != null);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-            return false;
-        }
-
-        /// <summary>
-        /// Modifie un DVD dans la BDD, return true si l'opération est correcte
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="jsonDvd"></param>
-        /// <returns></returns>
-        public bool UpdateDvd(string id, String jsonDvd)
-        {
-            jsonDvd = jsonDvd.Replace(' ', '-');
-            try
-            {
-                List<Object> liste = TraitementRecup<Object>(PUT, "dvd/" + id + "/" + jsonDvd);
-                return (liste != null);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-            return false;
-        }
-
-        /// <summary>
-        /// Supprime un DVD dans la BDD, return true si l'opération est correcte
-        /// </summary>
-        /// <param name="jsonDvd"></param>
-        /// <returns></returns>
-        public bool SupprimerDvd(String jsonDvd)
-        {
-            jsonDvd = jsonDvd.Replace(' ', '-');
-            try
-            {
-                List<Object> liste = TraitementRecup<Object>(DELETE, "dvd/" + jsonDvd);
-                return (liste != null);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-            return false;
-        }
-
-        /// <summary>
-        /// Ajouter une revue dans la BDD, return true si l'opération est correcte
-        /// </summary>
-        /// <param name="jsonRevue"></param>
-        /// <returns></returns>
-        public bool CreerRevue(String jsonRevue)
-        {
-            jsonRevue = jsonRevue.Replace(' ', '-');
-            try
-            {
-                List<Object> liste = TraitementRecup<Object>(POST, "revue/" + jsonRevue);
-                return (liste != null);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-            return false;
-        }
-
-        /// <summary>
-        /// Modifie une revue dans la BDD, return true si l'opération est correcte
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="jsonRevue"></param>
-        /// <returns></returns>
-        public bool UpdateRevue(string id, String jsonRevue)
-        {
-            jsonRevue = jsonRevue.Replace(' ', '-');
-            try
-            {
-                List<Object> liste = TraitementRecup<Object>(PUT, "revue/" + id + "/" + jsonRevue);
-                return (liste != null);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-            return false;
-        }
-
-        /// <summary>
-        /// Supprime une revue dans la BDD, return true si l'opération est correcte
-        /// </summary>
-        /// <param name="jsonRevue"></param>
-        /// <returns></returns>
-        public bool SupprimerRevue(String jsonRevue)
-        {
-            jsonRevue = jsonRevue.Replace(' ', '-');
-            try
-            {
-                List<Object> liste = TraitementRecup<Object>(DELETE, "revue/" + jsonRevue);
+               List<Object> liste = TraitementRecup<Object>(DELETE,type+ "/" + jsonEntite);
                 return (liste != null);
             }
             catch (Exception ex)
@@ -434,15 +215,37 @@ namespace MediaTekDocuments.dal
         }
 
         /// <summary>
-        /// ecriture d'un exemplaire en base de données
+        /// Retourne les commandes d'un livre
         /// </summary>
-        /// <param name="exemplaire">exemplaire à insérer</param>
-        /// <returns>true si l'insertion a pu se faire (retour != null)</returns>
+        /// <param name="idLivre"></param>
+        /// <returns></returns>
+        public List<CommandeDocument> GetCommandesLivres(string idLivre)
+        {
+            String jsonIdDocument = convertToJson("idLivreDvd", idLivre);
+            List<CommandeDocument> lesCommandesLivres = TraitementRecup<CommandeDocument>(GET, "commandedocument/" + jsonIdDocument);
+            return lesCommandesLivres;
+        }
+
+        /// <summary>
+        /// Retourne l'index max en string
+        /// </summary>
+        /// <param name="maxIndex"></param>
+        /// <returns></returns>
+        public string getMaxIndex(string maxIndex)
+        {
+            List<Categorie> maxindex = TraitementRecup<Categorie>(GET, maxIndex);
+            return maxindex[0].Id;
+        }
+
+        /// <summary>
+        /// Création d'un exemplaire en base de données
+        /// </summary>
+        /// <param name="exemplaire"></param>
+        /// <returns>true si l'insertion est correcte</returns>
         public bool CreerExemplaire(Exemplaire exemplaire)
         {
             String jsonExemplaire = JsonConvert.SerializeObject(exemplaire, new CustomDateTimeConverter());
             try {
-                // récupération soit d'une liste vide (requête ok) soit de null (erreur)
                 List<Exemplaire> liste = TraitementRecup<Exemplaire>(POST, "exemplaire/" + jsonExemplaire);
                 return (liste != null);
             }
@@ -465,7 +268,7 @@ namespace MediaTekDocuments.dal
             List<T> liste = new List<T>();
             try
             {
-                Console.WriteLine("TraitementRecup string = " + message);
+                Console.WriteLine("TraitementRecup" + methode + "et " + message );
                 JObject retour = api.RecupDistant(methode, message);
                 String code = (String)retour["code"];
                 if (code.Equals("200"))
@@ -529,6 +332,8 @@ namespace MediaTekDocuments.dal
                 serializer.Serialize(writer, value);
             }
         }
+
+
 
     }
 }
