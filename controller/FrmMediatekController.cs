@@ -321,6 +321,71 @@ namespace MediaTekDocuments.controller
         }
         #endregion
 
+        #region abonnements
+        /// <summary>
+        /// Retourne tous les abonnements d'une revue
+        /// </summary>
+        /// <param name="idRevue"></param>
+        /// <returns></returns>
+        public List<Abonnement> GetAbonnements(string idRevue)
+        {
+            return access.GetAbonnements(idRevue);
+        }
+        /// <summary>
+        /// Requêtes post update delete d'un abonnement
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="dateCommande"></param>
+        /// <param name="montant"></param>
+        /// <param name="dateFinAbonnement"></param>
+        /// <param name="idRevue"></param>
+        /// <param name="verbose"></param>
+        /// <returns></returns>
+        public bool utilAbonnement(string id, DateTime dateCommande, double montant, DateTime dateFinAbonnement, string idRevue, string verbose)
+        {
+            Dictionary<string, object> unAbonnement = new Dictionary<string, object>();
+            unAbonnement.Add("Id", id);
+            unAbonnement.Add("DateCommande", dateCommande.ToString("yyyy-MM-dd"));
+            unAbonnement.Add("Montant", montant);
+            unAbonnement.Add("DateFinAbonnement", dateFinAbonnement.ToString("yyyy-MM-dd"));
+            unAbonnement.Add("IdRevue", idRevue);
+            if (verbose == "post")
+                return access.CreerEntite("abonnement", JsonConvert.SerializeObject(unAbonnement));
+            if (verbose == "update")
+                return access.UpdateEntite("abonnement", id, JsonConvert.SerializeObject(unAbonnement));
+            if (verbose == "delete")
+                return access.SupprimerEntite("abonnement", JsonConvert.SerializeObject(unAbonnement));
+            return false;
+        }
+        /// <summary>
+        /// Ajouter un abonnement dans la BDD
+        /// </summary>
+        /// <param name="commandeLivreDvd"></param>
+        /// <returns></returns>
+        public bool CreerAbonnement(Abonnement abonnement)
+        {
+            return utilAbonnement(abonnement.Id, abonnement.DateCommande, abonnement.Montant, abonnement.DateFinAbonnement, abonnement.IdRevue, "post");
+        }
+
+        /// <summary>
+        /// Modifier un abonnement dans la BDD
+        /// </summary>
+        /// <param name="commandeLivreDvd"></param>
+        /// <returns></returns>
+        public bool UpdateAbonnement(Abonnement abonnement)
+        {
+            return utilAbonnement(abonnement.Id, abonnement.DateCommande, abonnement.Montant, abonnement.DateFinAbonnement, abonnement.IdRevue, "update");
+        }
+        /// <summary>
+        /// Supprimer un abonnement dans la BDD
+        /// </summary>
+        /// <param name="abonnement"></param>
+        /// <returns></returns>
+        public bool SupprimerAbonnement(Abonnement abonnement)
+        {
+            return utilAbonnement(abonnement.Id, abonnement.DateCommande, abonnement.Montant, abonnement.DateFinAbonnement, abonnement.IdRevue, "delete");
+        }
+        #endregion
 
     }
 }
