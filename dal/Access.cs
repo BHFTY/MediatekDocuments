@@ -76,11 +76,29 @@ namespace MediaTekDocuments.dal
             return instance;
         }
 
-        /// <summary>
-        /// Retourne tous les genres à partir de la BDD
-        /// </summary>
-        /// <returns>Liste d'objets Genre</returns>
-        public List<Categorie> GetAllGenres()
+          /// <summary>
+          /// 
+          /// </summary>
+          /// <param name="mail"></param>
+          /// <param name="hash"></param>
+          /// <returns></returns>
+          public Utilisateur GetLogin(string mail, string hash)
+          {
+               Dictionary<string, string> login = new Dictionary<string, string>();
+               login.Add("mail", mail);
+               login.Add("password", hash);
+               String mailHash = JsonConvert.SerializeObject(login);
+               List<Utilisateur> utilisateurs = TraitementRecup<Utilisateur>(GET, "utilisateur/" + mailHash);
+               if (utilisateurs.Count > 0)
+                    return utilisateurs[0];
+               return null;
+          }
+
+          /// <summary>
+          /// Retourne tous les genres à partir de la BDD
+          /// </summary>
+          /// <returns>Liste d'objets Genre</returns>
+          public List<Categorie> GetAllGenres()
         {
             IEnumerable<Genre> lesGenres = TraitementRecup<Genre>(GET, "genre");
             return new List<Categorie>(lesGenres);
@@ -96,11 +114,16 @@ namespace MediaTekDocuments.dal
             return new List<Categorie>(lesRayons);
         }
 
+        /// <summary>
+        /// Retourne tous les suivis à partir de la BDD
+        /// </summary>
+        /// <returns></returns>
         public List<Suivi> GetAllSuivis()
         {
             IEnumerable<Suivi> LesSuivis = TraitementRecup<Suivi>(GET, "suivi");
             return new List<Suivi>(LesSuivis);
         }
+
 
         /// <summary>
         /// Retourne toutes les catégories de public à partir de la BDD
@@ -110,6 +133,16 @@ namespace MediaTekDocuments.dal
         {
             IEnumerable<Public> lesPublics = TraitementRecup<Public>(GET, "public");
             return new List<Categorie>(lesPublics);
+        }
+
+        /// <summary>
+        /// Retourne tous les etats à partir de la BDD
+        /// </summary>
+        /// <returns></returns>
+        public List<Etat> GetAllEtats()
+        {
+            IEnumerable<Etat> lesEtats = TraitementRecup<Etat>(GET, "etat");
+            return new List<Etat>(lesEtats);
         }
 
         /// <summary>
@@ -238,23 +271,23 @@ namespace MediaTekDocuments.dal
             return abonnements;
         }
 
-        /// <summary>
-        /// Retourne l'index max en string
-        /// </summary>
-        /// <param name="maxIndex"></param>
-        /// <returns></returns>
-        public string getMaxIndex(string maxIndex)
-        {
-            List<Categorie> maxindex = TraitementRecup<Categorie>(GET, maxIndex);
-            return maxindex[0].Id;
-        }
+          /// <summary>
+          /// Retourne l'index max en string
+          /// </summary>
+          /// <param name="maxIndex"></param>
+          /// <returns></returns>
+          public string getMaxIndex(string maxIndex)
+          {
+               List<Categorie> maxindex = TraitementRecup<Categorie>(GET, maxIndex);
+               return maxindex[0].Id;
+          }
 
-        /// <summary>
-        /// Création d'un exemplaire en base de données
-        /// </summary>
-        /// <param name="exemplaire"></param>
-        /// <returns>true si l'insertion est correcte</returns>
-        public bool CreerExemplaire(Exemplaire exemplaire)
+          /// <summary>
+          /// Création d'un exemplaire en base de données
+          /// </summary>
+          /// <param name="exemplaire"></param>
+          /// <returns>true si l'insertion est correcte</returns>
+          public bool CreerExemplaire(Exemplaire exemplaire)
         {
             String jsonExemplaire = JsonConvert.SerializeObject(exemplaire, new CustomDateTimeConverter());
             try {

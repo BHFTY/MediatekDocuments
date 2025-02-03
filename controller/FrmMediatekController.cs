@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using MediaTekDocuments.model;
 using MediaTekDocuments.dal;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System.Threading;
 
 namespace MediaTekDocuments.controller
@@ -54,12 +55,74 @@ namespace MediaTekDocuments.controller
         }
 
         /// <summary>
-        /// Getter sur les etats
+        /// Getter sur les suivis
         /// </summary>
         /// <returns></returns>
         public List<Suivi> GetAllSuivis()
         {
             return access.GetAllSuivis();
+        }
+
+          /// <summary>
+          /// Getter sur les etats
+          /// </summary>
+          /// <returns></returns>
+          public List<Etat> GetAllEtats()
+        {
+            return access.GetAllEtats();
+        }
+
+          /// <summary>
+          /// Retourne vrai ou faux si le service de l'utilisateur
+          /// est autorisé
+          /// </summary>
+          /// <param name="utilisateur"></param>
+          /// <returns></returns>
+          public bool verifDroitAccueil(Utilisateur utilisateur)
+          {
+               Console.WriteLine(utilisateur.Nom);
+               List<string> services = new List<string> { "compta", "biblio", "accueil" };
+               if (services.Contains(utilisateur.Service))
+                    return true;
+               return false;
+          }
+          /// <summary>
+          /// Retourne vrai ou faux si le service de l'utilisateur
+          /// est autorisé
+          /// </summary>
+          /// <param name="utilisateur"></param>
+          /// <returns></returns>
+          public bool verifDroitModif(Utilisateur utilisateur)
+          {
+               Console.WriteLine(utilisateur.Nom);
+               List<string> services = new List<string> { "biblio", "accueil" };
+               if (services.Contains(utilisateur.Service))
+                    return true;
+               return false;
+          }
+          /// <summary>
+          /// Retourne vrai ou faux si le service de l'utilisateur
+          /// est autorisé
+          /// </summary>
+          /// <param name="utilisateur"></param>
+          /// <returns></returns>
+          public bool verifCommande(Utilisateur utilisateur)
+          {
+               List<string> services = new List<string> { "biblio" };
+               if (services.Contains(utilisateur.Service))
+                    return true;
+               return false;
+          }
+
+          /// <summary>
+          /// Modification du convertisseur Json pour gérer le format de date
+          /// </summary>
+          private sealed class CustomDateTimeConverter : IsoDateTimeConverter
+        {
+            public CustomDateTimeConverter()
+            {
+                base.DateTimeFormat = "yyyy-MM-dd";
+            }
         }
         #endregion
 
@@ -72,6 +135,25 @@ namespace MediaTekDocuments.controller
         public List<Livre> GetAllLivres()
         {
             return access.GetAllLivres();
+        }
+
+        /// <summary>
+        /// Update un exemplaire dans la bdd
+        /// </summary>
+        /// <param name="exemplaire"></param>
+        /// <returns></returns>
+        public bool UpdateExemplaire(Exemplaire exemplaire)
+        {
+            return access.UpdateEntite("exemplaire", exemplaire.Id, JsonConvert.SerializeObject(exemplaire, new CustomDateTimeConverter()));
+        }
+        /// <summary>
+        /// Supprime un exemplaire dans la bdd
+        /// </summary>
+        /// <param name="exemplaire"></param>
+        /// <returns></returns>
+        public bool SupprimerExemplaire(Exemplaire exemplaire)
+        {
+            return access.SupprimerEntite("exemplaire", JsonConvert.SerializeObject(exemplaire, new CustomDateTimeConverter()));
         }
 
         /// <summary>
@@ -293,8 +375,8 @@ namespace MediaTekDocuments.controller
         /// <returns></returns>
         public bool CreerLivreDvdCom(CommandeDocument commandeLivreDvd)
         {
-            return utilCommandeDocument(commandeLivreDvd.Id, commandeLivreDvd.DateCommande, commandeLivreDvd.Montant, commandeLivreDvd.NbExemplaire,
-                    commandeLivreDvd.IdLivreDvd, commandeLivreDvd.IdSuivi, commandeLivreDvd.Etat, "post");
+            return utilCommandeDocument(commandeLivreDvd.Id, commandeLivreDvd.DateCommande, commandeLivreDvd.Montant, commandeLivreDvd.NbExemplaire ?? 0,
+                    commandeLivreDvd.IdLivreDvd, commandeLivreDvd.IdSuivi ?? 0, commandeLivreDvd.Etat, "post");
         }
 
 
@@ -305,8 +387,8 @@ namespace MediaTekDocuments.controller
         /// <returns></returns>
         public bool UpdateLivreDvdCom(CommandeDocument commandeLivreDvd)
         {
-            return utilCommandeDocument(commandeLivreDvd.Id, commandeLivreDvd.DateCommande, commandeLivreDvd.Montant, commandeLivreDvd.NbExemplaire,
-                   commandeLivreDvd.IdLivreDvd, commandeLivreDvd.IdSuivi, commandeLivreDvd.Etat, "update");
+            return utilCommandeDocument(commandeLivreDvd.Id, commandeLivreDvd.DateCommande, commandeLivreDvd.Montant, commandeLivreDvd.NbExemplaire ?? 0,
+                   commandeLivreDvd.IdLivreDvd, commandeLivreDvd.IdSuivi ?? 0, commandeLivreDvd.Etat, "update");
         }
 
         /// <summary>
@@ -316,8 +398,8 @@ namespace MediaTekDocuments.controller
         /// <returns></returns>
         public bool SupprimerLivreDvdCom(CommandeDocument commandeLivreDvd)
         {
-            return utilCommandeDocument(commandeLivreDvd.Id, commandeLivreDvd.DateCommande, commandeLivreDvd.Montant, commandeLivreDvd.NbExemplaire,
-                   commandeLivreDvd.IdLivreDvd, commandeLivreDvd.IdSuivi, commandeLivreDvd.Etat, "delete");
+            return utilCommandeDocument(commandeLivreDvd.Id, commandeLivreDvd.DateCommande, commandeLivreDvd.Montant, commandeLivreDvd.NbExemplaire ?? 0,
+                   commandeLivreDvd.IdLivreDvd, commandeLivreDvd.IdSuivi ?? 0, commandeLivreDvd.Etat, "delete");
         }
         #endregion
 
