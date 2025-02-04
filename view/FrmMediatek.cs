@@ -11,125 +11,149 @@ using System.Threading;
 namespace MediaTekDocuments.view
 
 {
-    /// <summary>
-    /// Classe d'affichage
-    /// </summary>
-    public partial class FrmMediatek : Form
-    {
-        #region Commun
-        private readonly FrmMediatekController controller;
-        private readonly BindingSource bdgGenres = new BindingSource();
-        private readonly BindingSource bdgPublics = new BindingSource();
-        private readonly BindingSource bdgRayons = new BindingSource();
-        private readonly BindingSource bdgEtats = new BindingSource();
-        private List<Etat> lesEtatsEx = new List<Etat>();
-        private bool ajouterBool = false;
-        private bool modifEtat = true;
+     /// <summary>
+     /// Classe d'affichage
+     /// </summary>
+     public partial class FrmMediatek : Form
+     {
+          #region Commun
+          private readonly FrmMediatekController controller;
+          private readonly BindingSource bdgGenres = new BindingSource();
+          private readonly BindingSource bdgPublics = new BindingSource();
+          private readonly BindingSource bdgRayons = new BindingSource();
+          private readonly BindingSource bdgEtats = new BindingSource();
+          private List<Etat> lesEtatsEx = new List<Etat>();
+          private Utilisateur utilisateur;
+          private bool ajouterBool = false;
+          private bool modifEtat = false;
+          private bool firstLoad = true;
 
 
           /// <summary>
           /// Constructeur : création du contrôleur lié à ce formulaire
           /// </summary>
-          internal FrmMediatek()
-        {
-            InitializeComponent();
-            this.controller = new FrmMediatekController();
-            afficherAlerteAbo();
-        }
+          internal FrmMediatek(Utilisateur lutilisateur)
+          {
+               InitializeComponent();
+               this.controller = new FrmMediatekController();
+               this.utilisateur = lutilisateur;
+               verifDroitAccueil(lutilisateur);
+          }
 
-        /// <summary>
-        /// Rempli un des 3 combo 
-        /// </summary>
-        /// <param name="lesCategories"></param>
-        /// <param name="bdg"></param>
-        /// <param name="cbx"></param>
-        public void RemplirComboCategorie(List<Categorie> lesCategories, BindingSource bdg, ComboBox cbx)
-        {
-            bdg.DataSource = lesCategories;
-            cbx.DataSource = bdg;
-            if (cbx.Items.Count > 0)
-            {
-                cbx.SelectedIndex = -1;
-            }
-        }
-
-        /// <summary>
-        /// Rempli un combo de suivi 
-        /// </summary>
-        /// <param name="lesCategories"></param>
-        /// <param name="bdg"></param>
-        /// <param name="cbx"></param>
-        public void RemplirComboSuivi(List<Suivi> lesSuivis, BindingSource bdg, ComboBox cbx)
-        {
-               foreach (Suivi suivie in lesSuivis)
-               {
-                    Console.WriteLine(suivie.Etat);
-               }
-               
-            bdg.DataSource = lesSuivis;
+          /// <summary>
+          /// Rempli un des 3 combo 
+          /// </summary>
+          /// <param name="lesCategories"></param>
+          /// <param name="bdg"></param>
+          /// <param name="cbx"></param>
+          public void RemplirComboCategorie(List<Categorie> lesCategories, BindingSource bdg, ComboBox cbx)
+          {
+               bdg.DataSource = lesCategories;
                cbx.DataSource = bdg;
-            if (cbx.Items.Count > 0)
-            {
+               if (cbx.Items.Count > 0)
+               {
                     cbx.SelectedIndex = -1;
-            }
-        }
+               }
+          }
 
-        /// <summary>
-        /// Rempli un combo d'etat
-        /// </summary>
-        /// <param name="lesEtats"></param>
-        /// <param name="bdg"></param>
-        /// <param name="cbx"></param>
-        public void RemplirComboEtat(List<Etat> lesEtats, BindingSource bdg, ComboBox cbx)
-        {
+          /// <summary>
+          /// Rempli un combo de suivi 
+          /// </summary>
+          /// <param name="lesCategories"></param>
+          /// <param name="bdg"></param>
+          /// <param name="cbx"></param>
+          public void RemplirComboSuivi(List<Suivi> lesSuivis, BindingSource bdg, ComboBox cbx)
+          {
+               bdg.DataSource = lesSuivis;
+               cbx.DataSource = bdg;
+               if (cbx.Items.Count > 0)
+               {
+                    cbx.SelectedIndex = -1;
+               }
+          }
+
+          /// <summary>
+          /// Rempli un combo d'etat
+          /// </summary>
+          /// <param name="lesEtats"></param>
+          /// <param name="bdg"></param>
+          /// <param name="cbx"></param>
+          public void RemplirComboEtat(List<Etat> lesEtats, BindingSource bdg, ComboBox cbx)
+          {
                bdg.DataSource = lesEtats;
                cbx.DataSource = bdg;
                if (cbx.Items.Count > 0)
                {
                     cbx.SelectedIndex = -1;
                }
-        }
+          }
 
           private string plusUnIdString(string id)
-        {
-            int taille = id.Length;
-            int idnum = int.Parse(id) + 1;
-            id = idnum.ToString();
-            if (id.Length > taille)
-                MessageBox.Show("Taille du registre arrivé a saturation");
-            while (id.Length != taille)
-            {
-                id = "0" + id;
-            }
-            return id;
-        }
+          {
+               int taille = id.Length;
+               int idnum = int.Parse(id) + 1;
+               id = idnum.ToString();
+               if (id.Length > taille)
+                    MessageBox.Show("Taille du registre arrivé a saturation");
+               while (id.Length != taille)
+               {
+                    id = "0" + id;
+               }
+               return id;
+          }
 
-        /// <summary>
-        /// MessageBox affichant si des abonnements vont bientot se finir
-        /// </summary>
-        private void afficherAlerteAbo()
-        {
-            bool interupteur = false;
-            List<Revue> revues = controller.GetAllRevues();
-            string alerteRevues = "Revues dont l'abonnement se termine dans moins de 30 jours : \n";
-            foreach (Revue revue in revues)
-            {
-                List<Abonnement> abonnements = controller.GetAbonnements(revue.Id);
-                if (abonnements.FindAll(o => (o.DateFinAbonnement <= DateTime.Now.AddMonths(1))
-                               && (o.DateFinAbonnement >= DateTime.Now)).Count > 0)
+          /// <summary>
+          /// MessageBox affichant si des abonnements vont bientot se finir
+          /// </summary>
+          private void afficherAlerteAbo()
+          {
+               if (controller.verifCommande(utilisateur))
+               {
+                    bool interupteur = false;
+                    List<Revue> revues = controller.GetAllRevues();
+                    string alerteRevues = "Revues dont l'abonnement se termine dans moins de 30 jours : \n";
+                    foreach (Revue revue in revues)
                     {
-                    alerteRevues += "  -" + revue.Titre + "\n";
-                    interupteur = true;
-                }
-            }
-            if (interupteur)
-                MessageBox.Show(alerteRevues);
-        }
+                         List<Abonnement> abonnements = controller.GetAbonnements(revue.Id);
+                         if (abonnements.FindAll(o => (o.DateFinAbonnement <= DateTime.Now.AddMonths(1))
+                                     && (o.DateFinAbonnement >= DateTime.Now)).Count > 0)
+                         {
+                              alerteRevues += "  -" + revue.Titre + "\n";
+                              interupteur = true;
+                         }
+                    }
+                    if (interupteur)
+                         MessageBox.Show(alerteRevues);
+               }
 
-        #endregion
+          }
 
-        #region Onglet Livres
-        private readonly BindingSource bdgLivresListe = new BindingSource();
+          private void verifDroitAccueil(Utilisateur lutilisateur)
+          {
+               if (!controller.verifDroitAccueil(lutilisateur))
+               {
+                    MessageBox.Show("Droits insuffisant");
+                    Application.Exit();
+               }
+          }
+
+          /// <summary>
+          /// Arrête le programme
+          /// quand on ferme la fenêtre 
+          /// </summary>
+          /// <param name="sender"></param>
+          /// <param name="e"></param>
+          private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+          {
+               Application.Exit();
+          }
+
+
+
+          #endregion
+
+          #region Onglet Livres
+          private readonly BindingSource bdgLivresListe = new BindingSource();
         private List<Livre> lesLivres = new List<Livre>();
         private readonly BindingSource bdgGenresInfo = new BindingSource();
         private readonly BindingSource bdgPublicsInfo = new BindingSource();
@@ -144,7 +168,7 @@ namespace MediaTekDocuments.view
           /// <param name="sender"></param>
           /// <param name="e"></param>
           private void TabLivres_Enter(object sender, EventArgs e)
-        {
+          {
             lesLivres = controller.GetAllLivres();
             RemplirComboCategorie(controller.GetAllGenres(), bdgGenres, cbxLivresGenres);
             RemplirComboCategorie(controller.GetAllPublics(), bdgPublics, cbxLivresPublics);
@@ -152,12 +176,25 @@ namespace MediaTekDocuments.view
             RemplirComboCategorie(controller.GetAllGenres(), bdgGenresInfo, cbxLivresGenresInfo);
             RemplirComboCategorie(controller.GetAllPublics(), bdgPublicsInfo, cbxLivresPublicInfo);
             RemplirComboCategorie(controller.GetAllRayons(), bdgRayonsInfo, cbxLivresRayonInfo);
-               RemplirComboEtat(controller.GetAllEtats(), bdgEtats, cbxLivresExEtat);
-               lesEtatsEx = controller.GetAllEtats();
-               modifEtat = false;
-               enCoursModifLivres(false);
-               RemplirLivresListeComplete();
-        }
+            RemplirComboEtat(controller.GetAllEtats(), bdgEtats, cbxLivresExEtat);
+            lesEtatsEx = controller.GetAllEtats();
+            modifEtat = false;
+            RemplirLivresListeComplete();
+               if (controller.verifDroitModif(utilisateur))
+               {
+                    enCoursModifLivres(false);
+                    if (firstLoad)
+                    {
+                         Thread.Sleep(150);
+                         afficherAlerteAbo();
+                         firstLoad = false;
+                    }
+               }
+               else
+               {
+                    ConsultationLivres();
+               }
+          }
 
         /// <summary>
         /// Remplit le dategrid avec la liste reçue en paramètre
@@ -525,20 +562,47 @@ namespace MediaTekDocuments.view
             btnLivresAnnulGenres.Enabled = !modif;
             btnLivresAnnulPublics.Enabled = !modif;
             ajouterBool = false;
-               txbLivresNbEx.Enabled = false;
-               dtpLivresDateAchatEx.Enabled = false;
-               cbxLivresExEtat.Enabled = false;
-               btnSupprimerLivresEx.Enabled = !modif;
-               btnModifierLivresEx.Enabled = !modif;
-               dgvLivresListeEx.Enabled = !modif;
+            txbLivresNbEx.Enabled = false;
+            dtpLivresDateAchatEx.Enabled = false;
+            cbxLivresExEtat.Enabled = false;
+            btnSupprimerLivresEx.Enabled = !modif;
+            btnModifierLivresEx.Enabled = !modif;
+            dgvLivresListeEx.Enabled = !modif;
           }
 
-        /// <summary>
-        /// Ajout de livre
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void btnAjouterLivres_Click(object sender, EventArgs e)
+          /// <summary>
+          /// Desactive les interfaces
+          /// </summary>
+          private void ConsultationLivres()
+          {
+               btnSupprimerLivresEx.Enabled = false;
+               btnModifierLivresEx.Enabled = false;
+               btnAjouterLivres.Enabled = false;
+               btnSupprimerLivres.Enabled = false;
+               btnModifierLivres.Enabled = false;
+               btnAnnulerLivres.Enabled = false;
+               btnValiderLivres.Enabled = false;
+               btnSupprimerLivresEx.Visible = false;
+               btnModifierLivresEx.Visible = false;
+               btnAjouterLivres.Visible = false;
+               btnSupprimerLivres.Visible = false;
+               btnModifierLivres.Visible = false;
+               btnAnnulerLivres.Visible = false;
+               btnValiderLivres.Visible = false;
+               cbxLivresExEtat.Enabled = false;
+               cbxLivresGenresInfo.Enabled = false;
+               cbxLivresPublicInfo.Enabled = false;
+               cbxLivresRayonInfo.Enabled = false;
+               dtpLivresDateAchatEx.Enabled = false;
+          }
+
+
+          /// <summary>
+          /// Ajout de livre
+          /// </summary>
+          /// <param name="sender"></param>
+          /// <param name="e"></param>
+          private void btnAjouterLivres_Click(object sender, EventArgs e)
         {
             enCoursModifLivres(true);
             ajouterBool = true;
@@ -882,9 +946,19 @@ namespace MediaTekDocuments.view
             RemplirComboCategorie(controller.GetAllGenres(), bdgGenresInfoDvd, cbxDvdGenresInfo);
             RemplirComboCategorie(controller.GetAllPublics(), bdgPublicsInfoDvD, cbxDvdPublicInfo);
             RemplirComboCategorie(controller.GetAllRayons(), bdgRayonsInfoDvD, cbxDvdRayonInfo);
+            RemplirComboEtat(controller.GetAllEtats(), bdgEtats, cbxDvdExEtat);
+            lesEtatsEx = controller.GetAllEtats();
             enCoursModifDvd(false);
             RemplirDvdListeComplete();
-        }
+               if (controller.verifDroitModif(utilisateur))
+               {
+                    enCoursModifDvd(false);
+               }
+               else
+               {
+                    ConsultationDvd();
+               }
+          }
 
         /// <summary>
         /// Remplit le dategrid avec la liste reçue en paramètre
@@ -1177,12 +1251,39 @@ namespace MediaTekDocuments.view
             ajouterBool = false;
         }
 
-        /// <summary>
-        /// Ajout d'un nouveau dvd
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void btnAjouterDvd_Click(object sender, EventArgs e)
+          /// <summary>
+          /// Desactive les interfaces
+          /// </summary>
+          private void ConsultationDvd()
+          {
+               btnSupprimerDvdEx.Enabled = false;
+               btnModifierDvdEx.Enabled = false;
+               btnAjouterDvd.Enabled = false;
+               btnSupprimerDvd.Enabled = false;
+               btnModifierDvd.Enabled = false;
+               btnAnnulerDvd.Enabled = false;
+               btnValiderDvd.Enabled = false;
+               btnSupprimerDvdEx.Visible = false;
+               btnModifierDvdEx.Visible = false;
+               btnAjouterDvd.Visible = false;
+               btnSupprimerDvd.Visible = false;
+               btnModifierDvd.Visible = false;
+               btnAnnulerDvd.Visible = false;
+               btnValiderDvd.Visible = false;
+               cbxDvdGenresInfo.Enabled = false;
+               cbxDvdPublicInfo.Enabled = false;
+               cbxDvdRayonInfo.Enabled = false;
+               dtpDvdDateAchatEx.Enabled = false;
+               cbxDvdExEtat.Enabled = false;
+          }
+
+
+          /// <summary>
+          /// Ajout d'un nouveau dvd
+          /// </summary>
+          /// <param name="sender"></param>
+          /// <param name="e"></param>
+          private void btnAjouterDvd_Click(object sender, EventArgs e)
         {
             enCoursModifDvd(true);
             ajouterBool = true;
@@ -1363,9 +1464,19 @@ namespace MediaTekDocuments.view
             RemplirComboCategorie(controller.GetAllGenres(), bdgGenresInfoRevues, cbxRevuesGenresInfo);
             RemplirComboCategorie(controller.GetAllPublics(), bdgPublicsInfoRevues, cbxRevuesPublicInfo);
             RemplirComboCategorie(controller.GetAllRayons(), bdgRayonsInfoRevues, cbxRevuesRayonInfo);
-            enCoursModifRevues(false);
+            RemplirComboEtat(controller.GetAllEtats(), bdgEtats, cbxRevuesExEtat);
+            lesEtatsEx = controller.GetAllEtats();
+            modifEtat = false;
             RemplirRevuesListeComplete();
-        }
+               if (controller.verifDroitModif(utilisateur))
+               {
+                    enCoursModifRevues(false);
+               }
+               else
+               {
+                    ConsultationRevue();
+               }
+          }
 
         /// <summary>
         /// Remplit le dategrid avec la liste reçue en paramètre
@@ -1655,12 +1766,38 @@ namespace MediaTekDocuments.view
             ajouterBool = false;
         }
 
-        /// <summary>
-        /// Ajout d'une revue dans la bdd
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void btnAjouterRevues_Click(object sender, EventArgs e)
+          /// <summary>
+          /// Desactive les interfaces
+          /// </summary>
+          private void ConsultationRevue()
+          {
+               btnSupprimerRevuesEx.Enabled = false;
+               btnModifierRevuesEx.Enabled = false;
+               btnAjouterRevues.Enabled = false;
+               btnSupprimerRevues.Enabled = false;
+               btnModifierRevues.Enabled = false;
+               btnAnnulerRevues.Enabled = false;
+               btnValiderRevues.Enabled = false;
+               btnSupprimerRevuesEx.Visible = false;
+               btnModifierRevuesEx.Visible = false;
+               btnAjouterRevues.Visible = false;
+               btnSupprimerRevues.Visible = false;
+               btnModifierRevues.Visible = false;
+               btnAnnulerRevues.Visible = false;
+               btnValiderRevues.Visible = false;
+               cbxRevuesGenresInfo.Enabled = false;
+               cbxRevuesPublicInfo.Enabled = false;
+               cbxRevuesRayonInfo.Enabled = false;
+               dtpRevuesDateAchatEx.Enabled = false;
+               cbxRevuesExEtat.Enabled = false;
+          }
+
+          /// <summary>
+          /// Ajout d'une revue dans la bdd
+          /// </summary>
+          /// <param name="sender"></param>
+          /// <param name="e"></param>
+          private void btnAjouterRevues_Click(object sender, EventArgs e)
         {
             enCoursModifRevues(true);
             ajouterBool = true;
@@ -1849,7 +1986,14 @@ namespace MediaTekDocuments.view
         {
             lesRevues = controller.GetAllRevues();
             txbReceptionRevueNumero.Text = "";
-        }
+               RemplirComboEtat(controller.GetAllEtats(), bdgEtats, cxbReceptionRevueEtatEx);
+               lesEtatsEx = controller.GetAllEtats();
+               if (!controller.verifDroitModif(utilisateur))
+               {
+                    grpReceptionExemplaire.Enabled = false;
+                    grpReceptionExemplaire.Visible = false;
+               }
+          }
 
         /// <summary>
         /// Remplit le dategrid des exemplaires avec la liste reçue en paramètre
@@ -2101,14 +2245,16 @@ namespace MediaTekDocuments.view
           /// <param name="e"></param>
           private void tabLivresCom_Enter(object sender, EventArgs e)
           {
+               MessageBox.Show("Droits insuffisant");
                lesLivresCom = controller.GetAllLivres();
-               RemplirComboCategorie(controller.GetAllGenres(), bdgGenres, cbxLivresComGenres);
-               RemplirComboCategorie(controller.GetAllPublics(), bdgPublics, cbxLivresComPublics);
-               RemplirComboCategorie(controller.GetAllRayons(), bdgRayons, cbxLivresComRayons);
-               RemplirComboCategorie(controller.GetAllGenres(), bdgGenresInfo, cbxLivresGenresInfo);
-               RemplirComboSuivi(controller.GetAllSuivis(), bdgLivresComEtat, cbxLivresComEtat);
-               enCoursModifLivresCom(false);
-               RemplirLivresComListeComplete();
+                    RemplirComboCategorie(controller.GetAllGenres(), bdgGenres, cbxLivresComGenres);
+                    RemplirComboCategorie(controller.GetAllPublics(), bdgPublics, cbxLivresComPublics);
+                    RemplirComboCategorie(controller.GetAllRayons(), bdgRayons, cbxLivresComRayons);
+                    RemplirComboSuivi(controller.GetAllSuivis(), bdgLivresComEtat, cbxLivresComEtat);
+                    RemplirComboEtat(controller.GetAllEtats(), bdgEtats, cbxLivresExEtat);
+                    enCoursModifLivresCom(false);
+                    RemplirLivresComListeComplete();
+               
           }
 
           /// <summary>
@@ -2404,12 +2550,14 @@ namespace MediaTekDocuments.view
                     id = "00001";
                VideLivresComInfos();
 
-
-              
                if (cbxLivresComEtat.Items.Count > 0)
                {
-                    cbxLivresComEtat.SelectedIndex = 0; 
+
+                    cbxLivresComEtat.SelectedIndex = 0;
+
+                    
                }
+
                txbLivresComNbCommande.Text = id;
                cbxLivresComEtat.Enabled = true;
           }
@@ -2679,16 +2827,14 @@ namespace MediaTekDocuments.view
           /// <param name="e"></param>
           private void tabCommandeDVD_Enter(object sender, EventArgs e)
           {
-               lesDvdCom = controller.GetAllDvd();
-               RemplirComboCategorie(controller.GetAllGenres(), bdgGenres, cbxDvdComGenres);
-               RemplirComboCategorie(controller.GetAllPublics(), bdgPublics, cbxDvdComPublics);
-               RemplirComboCategorie(controller.GetAllRayons(), bdgRayons, cbxDvdComRayons);
-
-               // Assurez-vous de remplir le combo des états ici
-               RemplirComboSuivi(controller.GetAllSuivis(), bdgDvdComEtat, cbxDvdComEtat);
-
-               enCoursModifDvdCom(false);
-               RemplirDvdComListeComplete();
+                    lesDvdCom = controller.GetAllDvd();
+                    RemplirComboCategorie(controller.GetAllGenres(), bdgGenres, cbxDvdComGenres);
+                    RemplirComboCategorie(controller.GetAllPublics(), bdgPublics, cbxDvdComPublics);
+                    RemplirComboCategorie(controller.GetAllRayons(), bdgRayons, cbxDvdComRayons);
+                    RemplirComboSuivi(controller.GetAllSuivis(), bdgDvdComEtat, cbxDvdComEtat);
+                    enCoursModifDvdCom(false);
+                    RemplirDvdComListeComplete();
+               
           }
 
           /// <summary>
@@ -2968,39 +3114,18 @@ namespace MediaTekDocuments.view
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void btnDvdComAjouter_Click_1(object sender, EventArgs e)
-{
-    enCoursModifDvdCom(true);
-    txbDvdComNumLivre.ReadOnly = true;
-    ajouterBool = true;
-    string id = plusUnIdString(controller.getNbCommandeMax());
-    if (id == "1")
-        id = "00001";
-    
-    VideDvdComInfos();
-    
-    // Réinitialiser le ComboBox
-    cbxLivresComEtat.Items.Clear();
-    
-    // Ajouter les états à cbxLivresComEtat
-    var etats = new List<(int id, string etat)>
-    {
-        (1, "en cours"),
-        (2, "relancée"),
-        (3, "livrée"),
-        (4, "réglée")
-    };
-    
-    foreach (var item in etats)
-    {
-        cbxLivresComEtat.Items.Add(new { ID = item.id, Etat = item.etat });
-    }
-    
-    // Définir l'index sélectionné
-    cbxLivresComEtat.SelectedIndex = 0;
-    
-    txbDvdComNbCommande.Text = id;
-    cbxLivresComEtat.Enabled = false;
-}
+        {
+            enCoursModifDvdCom(true);
+            txbDvdComNumLivre.ReadOnly = true;
+            ajouterBool = true;
+            string id = plusUnIdString(controller.getNbCommandeMax());
+            if (id == "1")
+            id = "00001";
+            VideDvdComInfos();
+            txbDvdComNbCommande.Text = id;
+               cbxLivresComEtat.SelectedIndex = 0;
+               cbxLivresComEtat.Enabled = false;
+        }
 
         /// <summary>
         /// démarre la procédure d'ajout de commande
@@ -3201,6 +3326,9 @@ namespace MediaTekDocuments.view
                 case "Duree":
                     sortedList = lesDvdCom.OrderBy(o => o.Duree).ToList();
                     break;
+                case "Realisateur":
+                    sortedList = lesDvdCom.OrderBy(o => o.Duree).ToList();
+                    break;
                 case "Genre":
                     sortedList = lesDvdCom.OrderBy(o => o.Genre).ToList();
                     break;
@@ -3364,14 +3492,15 @@ namespace MediaTekDocuments.view
         /// <param name="e"></param>
         private void tabAbo_Enter(object sender, EventArgs e)
         {
-            lesRevuesAbo = controller.GetAllRevues();
-            RemplirComboCategorie(controller.GetAllGenres(), bdgGenres, cbxAboGenres);
-            RemplirComboCategorie(controller.GetAllPublics(), bdgPublics, cbxAboPublics);
-            RemplirComboCategorie(controller.GetAllRayons(), bdgRayons, cbxAboRayons);
-            enCoursModifAbo(false);
-            RemplirAboListeComplete();
-            filtre = false;
-        }
+                    lesRevuesAbo = controller.GetAllRevues();
+                    RemplirComboCategorie(controller.GetAllGenres(), bdgGenres, cbxAboGenres);
+                    RemplirComboCategorie(controller.GetAllPublics(), bdgPublics, cbxAboPublics);
+                    RemplirComboCategorie(controller.GetAllRayons(), bdgRayons, cbxAboRayons);
+                    enCoursModifAbo(false);
+                    RemplirAboListeComplete();
+                    filtre = false;
+               
+          }
 
         /// <summary>
         /// Remplit le dategrid
@@ -3981,6 +4110,11 @@ namespace MediaTekDocuments.view
 
 
           private void grpAboRecherche_Enter(object sender, EventArgs e)
+          {
+
+          }
+
+          private void FrmMediatek_Load(object sender, EventArgs e)
           {
 
           }

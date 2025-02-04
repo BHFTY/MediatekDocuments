@@ -30,7 +30,7 @@ namespace MediaTekDocuments.controller
           }
           public bool GetLogin(string mail, string password)
           {
-               password = "Mediatek" + password;
+               password = password;
                string hash = "";
                using (SHA256 sha256Hash = SHA256.Create())
                {

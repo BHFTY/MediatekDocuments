@@ -79,6 +79,7 @@
                this.btnConnec.TabIndex = 4;
                this.btnConnec.Text = "Connection";
                this.btnConnec.UseVisualStyleBackColor = true;
+               this.btnConnec.Click += new System.EventHandler(this.btnConnec_Click);
                // 
                // FrmLogin
                // 

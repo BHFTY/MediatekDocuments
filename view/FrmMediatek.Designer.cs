@@ -87,6 +87,10 @@ namespace MediaTekDocuments.view
                this.label6 = new System.Windows.Forms.Label();
                this.txbLivresTitreRecherche = new System.Windows.Forms.TextBox();
                this.tabDvd = new System.Windows.Forms.TabPage();
+               this.dtpDvdDateAchatEx = new System.Windows.Forms.DateTimePicker();
+               this.btnModifierDvdEx = new System.Windows.Forms.Button();
+               this.btnSupprimerDvdEx = new System.Windows.Forms.Button();
+               this.cbxDvdExEtat = new System.Windows.Forms.ComboBox();
                this.grpDvdInfos = new System.Windows.Forms.GroupBox();
                this.cbxDvdRayonInfo = new System.Windows.Forms.ComboBox();
                this.cbxDvdPublicInfo = new System.Windows.Forms.ComboBox();
@@ -130,6 +134,10 @@ namespace MediaTekDocuments.view
                this.label42 = new System.Windows.Forms.Label();
                this.txbDvdTitreRecherche = new System.Windows.Forms.TextBox();
                this.tabRevues = new System.Windows.Forms.TabPage();
+               this.dtpRevuesDateAchatEx = new System.Windows.Forms.DateTimePicker();
+               this.btnModifierRevuesEx = new System.Windows.Forms.Button();
+               this.btnSupprimerRevuesEx = new System.Windows.Forms.Button();
+               this.cbxRevuesExEtat = new System.Windows.Forms.ComboBox();
                this.grpRevuesInfos = new System.Windows.Forms.GroupBox();
                this.cbxRevuesRayonInfo = new System.Windows.Forms.ComboBox();
                this.cbxRevuesPublicInfo = new System.Windows.Forms.ComboBox();
@@ -171,6 +179,7 @@ namespace MediaTekDocuments.view
                this.label34 = new System.Windows.Forms.Label();
                this.txbRevuesTitreRecherche = new System.Windows.Forms.TextBox();
                this.tabReceptionRevue = new System.Windows.Forms.TabPage();
+               this.cxbReceptionRevueEtatEx = new System.Windows.Forms.ComboBox();
                this.grpReceptionExemplaire = new System.Windows.Forms.GroupBox();
                this.label55 = new System.Windows.Forms.Label();
                this.btnReceptionExemplaireImage = new System.Windows.Forms.Button();
@@ -968,6 +977,10 @@ namespace MediaTekDocuments.view
                // 
                // tabDvd
                // 
+               this.tabDvd.Controls.Add(this.dtpDvdDateAchatEx);
+               this.tabDvd.Controls.Add(this.btnModifierDvdEx);
+               this.tabDvd.Controls.Add(this.btnSupprimerDvdEx);
+               this.tabDvd.Controls.Add(this.cbxDvdExEtat);
                this.tabDvd.Controls.Add(this.grpDvdInfos);
                this.tabDvd.Controls.Add(this.grpDvdRecherche);
                this.tabDvd.Location = new System.Drawing.Point(4, 22);
@@ -977,6 +990,39 @@ namespace MediaTekDocuments.view
                this.tabDvd.Text = "DVD";
                this.tabDvd.UseVisualStyleBackColor = true;
                this.tabDvd.Enter += new System.EventHandler(this.tabDvd_Enter);
+               // 
+               // dtpDvdDateAchatEx
+               // 
+               this.dtpDvdDateAchatEx.Location = new System.Drawing.Point(628, 718);
+               this.dtpDvdDateAchatEx.Name = "dtpDvdDateAchatEx";
+               this.dtpDvdDateAchatEx.Size = new System.Drawing.Size(200, 20);
+               this.dtpDvdDateAchatEx.TabIndex = 25;
+               // 
+               // btnModifierDvdEx
+               // 
+               this.btnModifierDvdEx.Location = new System.Drawing.Point(588, 786);
+               this.btnModifierDvdEx.Name = "btnModifierDvdEx";
+               this.btnModifierDvdEx.Size = new System.Drawing.Size(75, 23);
+               this.btnModifierDvdEx.TabIndex = 24;
+               this.btnModifierDvdEx.Text = "button1";
+               this.btnModifierDvdEx.UseVisualStyleBackColor = true;
+               // 
+               // btnSupprimerDvdEx
+               // 
+               this.btnSupprimerDvdEx.Location = new System.Drawing.Point(368, 795);
+               this.btnSupprimerDvdEx.Name = "btnSupprimerDvdEx";
+               this.btnSupprimerDvdEx.Size = new System.Drawing.Size(75, 23);
+               this.btnSupprimerDvdEx.TabIndex = 23;
+               this.btnSupprimerDvdEx.Text = "button1";
+               this.btnSupprimerDvdEx.UseVisualStyleBackColor = true;
+               // 
+               // cbxDvdExEtat
+               // 
+               this.cbxDvdExEtat.FormattingEnabled = true;
+               this.cbxDvdExEtat.Location = new System.Drawing.Point(426, 732);
+               this.cbxDvdExEtat.Name = "cbxDvdExEtat";
+               this.cbxDvdExEtat.Size = new System.Drawing.Size(121, 21);
+               this.cbxDvdExEtat.TabIndex = 22;
                // 
                // grpDvdInfos
                // 
@@ -1424,6 +1470,10 @@ namespace MediaTekDocuments.view
                // 
                // tabRevues
                // 
+               this.tabRevues.Controls.Add(this.dtpRevuesDateAchatEx);
+               this.tabRevues.Controls.Add(this.btnModifierRevuesEx);
+               this.tabRevues.Controls.Add(this.btnSupprimerRevuesEx);
+               this.tabRevues.Controls.Add(this.cbxRevuesExEtat);
                this.tabRevues.Controls.Add(this.grpRevuesInfos);
                this.tabRevues.Controls.Add(this.grpRevuesRecherche);
                this.tabRevues.Location = new System.Drawing.Point(4, 22);
@@ -1434,6 +1484,39 @@ namespace MediaTekDocuments.view
                this.tabRevues.Text = "Revues";
                this.tabRevues.UseVisualStyleBackColor = true;
                this.tabRevues.Enter += new System.EventHandler(this.tabRevues_Enter);
+               // 
+               // dtpRevuesDateAchatEx
+               // 
+               this.dtpRevuesDateAchatEx.Location = new System.Drawing.Point(673, 705);
+               this.dtpRevuesDateAchatEx.Name = "dtpRevuesDateAchatEx";
+               this.dtpRevuesDateAchatEx.Size = new System.Drawing.Size(200, 20);
+               this.dtpRevuesDateAchatEx.TabIndex = 24;
+               // 
+               // btnModifierRevuesEx
+               // 
+               this.btnModifierRevuesEx.Location = new System.Drawing.Point(421, 799);
+               this.btnModifierRevuesEx.Name = "btnModifierRevuesEx";
+               this.btnModifierRevuesEx.Size = new System.Drawing.Size(75, 23);
+               this.btnModifierRevuesEx.TabIndex = 23;
+               this.btnModifierRevuesEx.Text = "button1";
+               this.btnModifierRevuesEx.UseVisualStyleBackColor = true;
+               // 
+               // btnSupprimerRevuesEx
+               // 
+               this.btnSupprimerRevuesEx.Location = new System.Drawing.Point(503, 730);
+               this.btnSupprimerRevuesEx.Name = "btnSupprimerRevuesEx";
+               this.btnSupprimerRevuesEx.Size = new System.Drawing.Size(75, 23);
+               this.btnSupprimerRevuesEx.TabIndex = 22;
+               this.btnSupprimerRevuesEx.Text = "button1";
+               this.btnSupprimerRevuesEx.UseVisualStyleBackColor = true;
+               // 
+               // cbxRevuesExEtat
+               // 
+               this.cbxRevuesExEtat.FormattingEnabled = true;
+               this.cbxRevuesExEtat.Location = new System.Drawing.Point(368, 705);
+               this.cbxRevuesExEtat.Name = "cbxRevuesExEtat";
+               this.cbxRevuesExEtat.Size = new System.Drawing.Size(121, 21);
+               this.cbxRevuesExEtat.TabIndex = 21;
                // 
                // grpRevuesInfos
                // 
@@ -1858,6 +1941,7 @@ namespace MediaTekDocuments.view
                // 
                // tabReceptionRevue
                // 
+               this.tabReceptionRevue.Controls.Add(this.cxbReceptionRevueEtatEx);
                this.tabReceptionRevue.Controls.Add(this.grpReceptionExemplaire);
                this.tabReceptionRevue.Controls.Add(this.grpReceptionRevue);
                this.tabReceptionRevue.Location = new System.Drawing.Point(4, 22);
@@ -1867,6 +1951,14 @@ namespace MediaTekDocuments.view
                this.tabReceptionRevue.Text = "Parutions des revues";
                this.tabReceptionRevue.UseVisualStyleBackColor = true;
                this.tabReceptionRevue.Enter += new System.EventHandler(this.tabReceptionRevue_Enter);
+               // 
+               // cxbReceptionRevueEtatEx
+               // 
+               this.cxbReceptionRevueEtatEx.FormattingEnabled = true;
+               this.cxbReceptionRevueEtatEx.Location = new System.Drawing.Point(243, 694);
+               this.cxbReceptionRevueEtatEx.Name = "cxbReceptionRevueEtatEx";
+               this.cxbReceptionRevueEtatEx.Size = new System.Drawing.Size(121, 21);
+               this.cxbReceptionRevueEtatEx.TabIndex = 17;
                // 
                // grpReceptionExemplaire
                // 
@@ -3441,6 +3533,7 @@ namespace MediaTekDocuments.view
                this.Controls.Add(this.tabOngletsApplication);
                this.Name = "FrmMediatek";
                this.Text = "Gestion des documents de la médiathèque";
+               this.Load += new System.EventHandler(this.FrmMediatek_Load);
                this.tabOngletsApplication.ResumeLayout(false);
                this.tabLivres.ResumeLayout(false);
                this.gbxLivresEx.ResumeLayout(false);
@@ -3789,6 +3882,15 @@ namespace MediaTekDocuments.view
           private System.Windows.Forms.Button btnModifierLivresEx;
           private System.Windows.Forms.Button btnSupprimerLivresEx;
           private System.Windows.Forms.TextBox txbLivresExId;
+          private System.Windows.Forms.ComboBox cbxDvdExEtat;
+          private System.Windows.Forms.DateTimePicker dtpDvdDateAchatEx;
+          private System.Windows.Forms.Button btnModifierDvdEx;
+          private System.Windows.Forms.Button btnSupprimerDvdEx;
+          private System.Windows.Forms.ComboBox cbxRevuesExEtat;
+          private System.Windows.Forms.DateTimePicker dtpRevuesDateAchatEx;
+          private System.Windows.Forms.Button btnModifierRevuesEx;
+          private System.Windows.Forms.Button btnSupprimerRevuesEx;
+          private System.Windows.Forms.ComboBox cxbReceptionRevueEtatEx;
      }
 }
 
