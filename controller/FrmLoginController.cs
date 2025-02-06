@@ -15,7 +15,6 @@ namespace MediaTekDocuments.controller
           /// </summary>
           private readonly Access access;
           private Utilisateur utilisateur = null;
-          private FrmMediatek mediatek;
           /// <summary>
           /// Récupération de l'instance unique d'accès aux données
           /// </summary>
@@ -25,12 +24,12 @@ namespace MediaTekDocuments.controller
           }
           private void init()
           {
-               mediatek = new FrmMediatek(utilisateur);
+               FrmMediatek mediatek = new FrmMediatek(utilisateur);
                mediatek.Show();
           }
           public bool GetLogin(string mail, string password)
           {
-               password = password;
+               
                string hash = "";
                using (SHA256 sha256Hash = SHA256.Create())
                {

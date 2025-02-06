@@ -78,7 +78,7 @@ namespace MediaTekDocuments.controller
           /// </summary>
           /// <param name="utilisateur"></param>
           /// <returns></returns>
-          public bool verifDroitAccueil(Utilisateur utilisateur)
+          public bool VerifDroitAccueil(Utilisateur utilisateur)
           {
                Console.WriteLine(utilisateur.Nom);
                List<string> services = new List<string> { "compta", "biblio", "accueil" };
@@ -92,7 +92,7 @@ namespace MediaTekDocuments.controller
           /// </summary>
           /// <param name="utilisateur"></param>
           /// <returns></returns>
-          public bool verifDroitModif(Utilisateur utilisateur)
+          public bool VerifDroitModif(Utilisateur utilisateur)
           {
                Console.WriteLine(utilisateur.Nom);
                List<string> services = new List<string> { "biblio", "accueil" };
@@ -106,7 +106,7 @@ namespace MediaTekDocuments.controller
           /// </summary>
           /// <param name="utilisateur"></param>
           /// <returns></returns>
-          public bool verifCommande(Utilisateur utilisateur)
+          public bool VerifCommande(Utilisateur utilisateur)
           {
                List<string> services = new List<string> { "biblio" };
                if (services.Contains(utilisateur.Service))
@@ -224,7 +224,7 @@ namespace MediaTekDocuments.controller
         /// <returns>true si l'oppération est correcte</returns>
         public bool SupprimerDvd(Dvd dvd)
         {
-            return access.SupprimerEntite("dvd", JsonConvert.SerializeObject(dvd)); ;
+            return access.SupprimerEntite("dvd", JsonConvert.SerializeObject(dvd));
         }
         #endregion
 
@@ -306,9 +306,9 @@ namespace MediaTekDocuments.controller
         /// Retourne l'id max des commandes
         /// </summary>
         /// <returns></returns>
-        public string getNbCommandeMax()
+        public string GetNbCommandeMax()
         {
-            return access.getMaxIndex("maxcommande");
+            return access.GetMaxIndex("maxcommande");
         }
 
         /// <summary>
@@ -317,25 +317,25 @@ namespace MediaTekDocuments.controller
         /// <returns></returns>
         public string getNbLivreMax()
         {
-            return access.getMaxIndex("maxlivre");
+            return access.GetMaxIndex("maxlivre");
         }
 
         /// <summary>
         /// Retourne l'id max des Dvd
         /// </summary>
         /// <returns></returns>
-        public string getNbDvdMax()
+        public string GetNbDvdMax()
         {
-            return access.getMaxIndex("maxdvd");
+            return access.GetMaxIndex("maxdvd");
         }
 
         /// <summary>
         /// Retourne l'id max des revues
         /// </summary>
         /// <returns></returns>
-        public string getNbRevueMax()
+        public string GetNbRevueMax()
         {
-            return access.getMaxIndex("maxrevue");
+            return access.GetMaxIndex("maxrevue");
         }
 
         /// <summary>
