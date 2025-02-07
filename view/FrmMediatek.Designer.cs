@@ -3120,7 +3120,7 @@ namespace MediaTekDocuments.view
                this.TabAbo.TabIndex = 7;
                this.TabAbo.Text = "Abonnements";
                this.TabAbo.UseVisualStyleBackColor = true;
-               this.TabAbo.Enter += new System.EventHandler(this.tabAbo_Enter);
+               this.TabAbo.Enter += new System.EventHandler(this.TabAbo_Enter);
                // 
                // grpAboCommandes
                // 

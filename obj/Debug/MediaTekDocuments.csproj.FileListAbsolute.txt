@@ -83,3 +83,15 @@ C:\Users\cohen\Documents\Atelier2\MediatekDocuments\MediaTekDocuments\obj\Debug\
 C:\Users\cohen\Documents\Atelier2\MediatekDocuments\MediaTekDocuments\obj\Debug\MediaTekDocuments.exe
 C:\Users\cohen\Documents\Atelier2\MediatekDocuments\MediaTekDocuments\obj\Debug\MediaTekDocuments.pdb
 C:\Users\cohen\Documents\Atelier2\MediatekDocuments\MediaTekDocuments\obj\Debug\MediaTekDocuments.view.FrmLogin.resources
+C:\Users\cohen\Documents\Atelier2\MediatekDocuments\MediaTekDocuments\bin\Debug\Serilog.dll
+C:\Users\cohen\Documents\Atelier2\MediatekDocuments\MediaTekDocuments\bin\Debug\Serilog.Sinks.Console.dll
+C:\Users\cohen\Documents\Atelier2\MediatekDocuments\MediaTekDocuments\bin\Debug\Serilog.Sinks.EventLog.dll
+C:\Users\cohen\Documents\Atelier2\MediatekDocuments\MediaTekDocuments\bin\Debug\Serilog.Sinks.File.dll
+C:\Users\cohen\Documents\Atelier2\MediatekDocuments\MediaTekDocuments\bin\Debug\System.Diagnostics.DiagnosticSource.dll
+C:\Users\cohen\Documents\Atelier2\MediatekDocuments\MediaTekDocuments\bin\Debug\System.Threading.Channels.dll
+C:\Users\cohen\Documents\Atelier2\MediatekDocuments\MediaTekDocuments\bin\Debug\Serilog.xml
+C:\Users\cohen\Documents\Atelier2\MediatekDocuments\MediaTekDocuments\bin\Debug\Serilog.Sinks.Console.xml
+C:\Users\cohen\Documents\Atelier2\MediatekDocuments\MediaTekDocuments\bin\Debug\Serilog.Sinks.EventLog.xml
+C:\Users\cohen\Documents\Atelier2\MediatekDocuments\MediaTekDocuments\bin\Debug\Serilog.Sinks.File.xml
+C:\Users\cohen\Documents\Atelier2\MediatekDocuments\MediaTekDocuments\bin\Debug\System.Diagnostics.DiagnosticSource.xml
+C:\Users\cohen\Documents\Atelier2\MediatekDocuments\MediaTekDocuments\bin\Debug\System.Threading.Channels.xml

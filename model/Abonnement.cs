@@ -3,7 +3,7 @@
 
 namespace MediaTekDocuments.model
 {
-    internal class Abonnement : Commande
+    public class Abonnement : Commande
     {
         public DateTime DateFinAbonnement { get; }
 

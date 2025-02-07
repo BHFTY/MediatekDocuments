@@ -73,30 +73,26 @@ namespace MediaTekDocuments.controller
         }
 
           /// <summary>
-          /// Retourne vrai ou faux si le service de l'utilisateur
-          /// est autorisé
+          /// Retourne vrai ou faux si le service de l'utilisateur est accepter
           /// </summary>
           /// <param name="utilisateur"></param>
           /// <returns></returns>
           public bool VerifDroitAccueil(Utilisateur utilisateur)
           {
-               Console.WriteLine(utilisateur.Nom);
                List<string> services = new List<string> { "compta", "biblio", "accueil" };
-               if (services.Contains(utilisateur.Service))
+               if (services.Contains(utilisateur.Service.Libelle))
                     return true;
                return false;
           }
           /// <summary>
-          /// Retourne vrai ou faux si le service de l'utilisateur
-          /// est autorisé
+          /// Retourne vrai ou faux si le service de l'utilisateur est accepter
           /// </summary>
           /// <param name="utilisateur"></param>
           /// <returns></returns>
           public bool VerifDroitModif(Utilisateur utilisateur)
           {
-               Console.WriteLine(utilisateur.Nom);
                List<string> services = new List<string> { "biblio", "accueil" };
-               if (services.Contains(utilisateur.Service))
+               if (services.Contains(utilisateur.Service.Libelle))
                     return true;
                return false;
           }
@@ -109,7 +105,7 @@ namespace MediaTekDocuments.controller
           public bool VerifCommande(Utilisateur utilisateur)
           {
                List<string> services = new List<string> { "biblio" };
-               if (services.Contains(utilisateur.Service))
+               if (services.Contains(utilisateur.Service.Libelle))
                     return true;
                return false;
           }

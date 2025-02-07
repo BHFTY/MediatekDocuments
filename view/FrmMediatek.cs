@@ -32,7 +32,7 @@ namespace MediaTekDocuments.view
           /// <summary>
           /// Constructeur : création du contrôleur lié à ce formulaire
           /// </summary>
-          internal FrmMediatek(Utilisateur lutilisateur)
+          public FrmMediatek(Utilisateur lutilisateur)
           {
                InitializeComponent();
                this.controller = new FrmMediatekController();
@@ -177,6 +177,11 @@ namespace MediaTekDocuments.view
             RemplirComboCategorie(controller.GetAllPublics(), bdgPublicsInfo, cbxLivresPublicInfo);
             RemplirComboCategorie(controller.GetAllRayons(), bdgRayonsInfo, cbxLivresRayonInfo);
             RemplirComboEtat(controller.GetAllEtats(), bdgEtats, cbxLivresExEtat);
+            tabLivres.AutoScroll = false;
+            tabLivres.HorizontalScroll.Enabled = false;
+            tabLivres.HorizontalScroll.Visible = false;
+            tabLivres.HorizontalScroll.Maximum = 0;
+            tabLivres.AutoScroll = true;
             lesEtatsEx = controller.GetAllEtats();
             modifEtat = false;
             RemplirLivresListeComplete();
@@ -251,30 +256,31 @@ namespace MediaTekDocuments.view
           /// <param name="sender"></param>
           /// <param name="e"></param>
           private void BtnLivresNumRecherche_Click(object sender, EventArgs e)
-        {
-            if (!txbLivresNumRecherche.Text.Equals(""))
-            {
-                txbLivresTitreRecherche.Text = "";
-                cbxLivresGenres.SelectedIndex = -1;
-                cbxLivresRayons.SelectedIndex = -1;
-                cbxLivresPublics.SelectedIndex = -1;
-                Livre livre = lesLivres.Find(x => x.Id.Equals(txbLivresNumRecherche.Text));
-                if (livre != null)
+          {
+               Console.WriteLine("Bouton recherche : " + txbLivresNumRecherche.Text);
+                if (!txbLivresNumRecherche.Text.Equals(""))
                 {
-                    List<Livre> livres = new List<Livre>() { livre };
-                    RemplirLivresListe(livres);
+                     txbLivresTitreRecherche.Text = "";
+                     cbxLivresGenres.SelectedIndex = -1;
+                     cbxLivresRayons.SelectedIndex = -1;
+                     cbxLivresPublics.SelectedIndex = -1;
+                     Livre livre = lesLivres.Find(x => x.Id.Equals(txbLivresNumRecherche.Text));
+                     if (livre != null)
+                     {
+                         List<Livre> livres = new List<Livre>() { livre };
+                         RemplirLivresListe(livres);
+                     }
+                     else
+                     {
+                         MessageBox.Show("numéro introuvable");
+                         RemplirLivresListeComplete();
+                     }
                 }
                 else
                 {
-                    MessageBox.Show("numéro introuvable");
-                    RemplirLivresListeComplete();
+                     RemplirLivresListeComplete();
                 }
-            }
-            else
-            {
-                RemplirLivresListeComplete();
-            }
-        }
+          }
 
         /// <summary>
         /// Recherche et affichage des livres dont le titre matche acec la saisie.
@@ -965,7 +971,12 @@ namespace MediaTekDocuments.view
             RemplirComboCategorie(controller.GetAllRayons(), bdgRayonsInfoDvD, cbxDvdRayonInfo);
             RemplirComboEtat(controller.GetAllEtats(), bdgEtats, cbxDvdExEtat);
             lesEtatsEx = controller.GetAllEtats();
-            EnCoursModifDvd(false);
+            modifEtat = false;
+            tabDvd.AutoScroll = false;
+            tabDvd.HorizontalScroll.Enabled = false;
+            tabDvd.HorizontalScroll.Visible = false;
+            tabDvd.HorizontalScroll.Maximum = 0;
+            tabDvd.AutoScroll = true;
             RemplirDvdListeComplete();
                if (controller.VerifDroitModif(utilisateur))
                {
@@ -1427,6 +1438,11 @@ namespace MediaTekDocuments.view
                }
           }
 
+          private void btnModifierDvdEx_Click (object sender, EventArgs e)
+          {
+
+          }
+
 
 
           /// <summary>
@@ -1492,6 +1508,11 @@ namespace MediaTekDocuments.view
             RemplirComboEtat(controller.GetAllEtats(), bdgEtats, cbxRevuesExEtat);
             lesEtatsEx = controller.GetAllEtats();
             modifEtat = false;
+            tabRevues.AutoScroll = false;
+            tabRevues.HorizontalScroll.Enabled = false;
+            tabRevues.HorizontalScroll.Visible = false;
+            tabRevues.HorizontalScroll.Maximum = 0;
+            tabRevues.AutoScroll = true;
             RemplirRevuesListeComplete();
                if (controller.VerifDroitModif(utilisateur))
                {
@@ -2017,14 +2038,20 @@ namespace MediaTekDocuments.view
         {
             lesRevues = controller.GetAllRevues();
             txbReceptionRevueNumero.Text = "";
-               RemplirComboEtat(controller.GetAllEtats(), bdgEtats, cxbReceptionRevueEtatEx);
-               lesEtatsEx = controller.GetAllEtats();
+            RemplirComboEtat(controller.GetAllEtats(), bdgEtats, cxbReceptionRevueEtatEx);
+            lesEtatsEx = controller.GetAllEtats();
+            modifEtat = false;
+            tabReceptionRevue.AutoScroll = false;
+            tabReceptionRevue.HorizontalScroll.Enabled = false;
+            tabReceptionRevue.HorizontalScroll.Visible = false;
+            tabReceptionRevue.HorizontalScroll.Maximum = 0;
+            tabReceptionRevue.AutoScroll = true;
                if (!controller.VerifDroitModif(utilisateur))
                {
                     grpReceptionExemplaire.Enabled = false;
                     grpReceptionExemplaire.Visible = false;
                }
-          }
+        }
 
         /// <summary>
         /// Remplit le dategrid des exemplaires avec la liste reçue en paramètre
@@ -2277,14 +2304,19 @@ namespace MediaTekDocuments.view
           private void tabLivresCom_Enter(object sender, EventArgs e)
           {
                MessageBox.Show("Droits insuffisant");
+               tabCommandesLivres.AutoScroll = false;
+               tabCommandesLivres.HorizontalScroll.Enabled = false;
+               tabCommandesLivres.HorizontalScroll.Visible = false;
+               tabCommandesLivres.HorizontalScroll.Maximum = 0;
+               tabCommandesLivres.AutoScroll = true;
                lesLivresCom = controller.GetAllLivres();
-                    RemplirComboCategorie(controller.GetAllGenres(), bdgGenres, cbxLivresComGenres);
-                    RemplirComboCategorie(controller.GetAllPublics(), bdgPublics, cbxLivresComPublics);
-                    RemplirComboCategorie(controller.GetAllRayons(), bdgRayons, cbxLivresComRayons);
-                    RemplirComboSuivi(controller.GetAllSuivis(), bdgLivresComEtat, cbxLivresComEtat);
-                    RemplirComboEtat(controller.GetAllEtats(), bdgEtats, cbxLivresExEtat);
-                    EnCoursModifLivresCom(false);
-                    RemplirLivresComListeComplete();
+               RemplirComboCategorie(controller.GetAllGenres(), bdgGenres, cbxLivresComGenres);
+               RemplirComboCategorie(controller.GetAllPublics(), bdgPublics, cbxLivresComPublics);
+               RemplirComboCategorie(controller.GetAllRayons(), bdgRayons, cbxLivresComRayons);
+               RemplirComboSuivi(controller.GetAllSuivis(), bdgLivresComEtat, cbxLivresComEtat);
+               RemplirComboEtat(controller.GetAllEtats(), bdgEtats, cbxLivresExEtat);
+               EnCoursModifLivresCom(false);
+               RemplirLivresComListeComplete();
                
           }
 
@@ -2887,6 +2919,13 @@ namespace MediaTekDocuments.view
                     RemplirComboCategorie(controller.GetAllPublics(), bdgPublics, cbxDvdComPublics);
                     RemplirComboCategorie(controller.GetAllRayons(), bdgRayons, cbxDvdComRayons);
                     RemplirComboSuivi(controller.GetAllSuivis(), bdgDvdComEtat, cbxDvdComEtat);
+
+                    tabCommandeDVD.AutoScroll = false;
+                    tabCommandeDVD.HorizontalScroll.Enabled = false;
+                    tabCommandeDVD.HorizontalScroll.Visible = false;
+                    tabCommandeDVD.HorizontalScroll.Maximum = 0;
+                    tabCommandeDVD.AutoScroll = true;
+
                     EnCoursModifDvdCom(false);
                     RemplirDvdComListeComplete();
                
@@ -3476,10 +3515,7 @@ namespace MediaTekDocuments.view
                         sortedList = lesCommandesDvd.OrderBy(o => o.Montant).ToList();
                         break;
                 }
-                    Console.WriteLine(titreColonne);
-                    Console.WriteLine(lesCommandesDvd.Count.ToString());
                     RemplirDvdComListeCommandes(sortedList);
-                    Console.WriteLine(lesCommandesDvd.Count.ToString());
             }
         }
         
@@ -3573,12 +3609,19 @@ namespace MediaTekDocuments.view
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void tabAbo_Enter(object sender, EventArgs e)
+        private void TabAbo_Enter(object sender, EventArgs e)
         {
                     lesRevuesAbo = controller.GetAllRevues();
                     RemplirComboCategorie(controller.GetAllGenres(), bdgGenres, cbxAboGenres);
                     RemplirComboCategorie(controller.GetAllPublics(), bdgPublics, cbxAboPublics);
                     RemplirComboCategorie(controller.GetAllRayons(), bdgRayons, cbxAboRayons);
+
+                    TabAbo.AutoScroll = false;
+                    TabAbo.HorizontalScroll.Enabled = false;
+                    TabAbo.HorizontalScroll.Visible = false;
+                    TabAbo.HorizontalScroll.Maximum = 0;
+                    TabAbo.AutoScroll = true;
+
                     EnCoursModifAbo(false);
                     RemplirAboListeComplete();
                     filtre = false;
